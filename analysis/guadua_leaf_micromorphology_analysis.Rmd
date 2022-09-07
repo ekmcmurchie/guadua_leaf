@@ -1,0 +1,133 @@
+---
+title: "Guadua Leaf Micromorphology Analysis"
+author: "Elizabeth McMurchie"
+date: "2022-09-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## load appropriate libraries, installing if needed
+```{r}
+library(readxl) #to read in doc
+library(RRPP) #factorial manova uses this 
+library(geomorph) #factorial manova uses this
+library(tidyverse) #includes ggplot2 needed for graphics
+library(ade4) #needed for PCOA
+library(vegan) #needed for PCoA
+library(pander) #for model comparison
+library(readr) #for model comparison
+library(ggcorrplot) #for correlation tables
+```
+
+## Read in data as dataframe
+```{r}
+guadualeaf <- read_csv("../data/tidy/guadualeaf.csv", col_names = TRUE, na = "x")
+```
+## Drop columns with NA and no variation and create dataframe with columsn as factors
+```{r}
+guadualeaf <- guadualeaf %>%
+  select(-c(ad_stomata_freq, ad_papillae_overarch, ad_triangular_sub_cells,
+            ad_dome_sub_cells, ad_parallel_sub_cells, ab_ridged_saddle_intercostal,
+            ad_ridged_saddle_intercostal)) # remove columns with NA or no variation
+
+df_guadualeaf = data.frame(guadualeaf, stringsAsFactors = TRUE) # create dataframe
+
+df_guadualeaf <- data.frame(lapply(df_guadualeaf,as.factor)) # set columns as factors
+
+```
+
+## Analysis
+
+### Correlation
+The correlation is necessary to complete the PCoA. Additionally, viewing the correlation dataframe is useful for understanding which traits are correlated.
+```{r}
+guadua_binary <- df_guadualeaf[,10:ncol(df_guadualeaf)] # reads in the binary data only 
+guadua_binary_df <- data.frame(lapply(guadua_binary,function(x) as.numeric(levels(x))[x]))
+correlation_guadua <- data.frame(cor(guadua_binary_df)) #calculated the correlation of the Y values
+```
+
+### PCoA 
+The distance matrix for the binary data is obtained using simple matching coefficient. The PCoA from the distance matrix can be used to visualize the pairwise distances between the micromorphology of individual *Guadua* specimens.
+```{r}
+guadua.dist <- dist.binary(guadua_binary_df, method = 2, diag = FALSE, upper = FALSE) # convert to distances using simple matching coefficient
+guadua.dist.matrix <- as.matrix(guadua.dist) # create matrix using simple matching distances
+PCoA <- cmdscale(guadua.dist.matrix, eig = TRUE, x.ret = TRUE, list. = TRUE) #from vegan - run PcoA
+```
+
+# Factorial MANOVA via RRPP excluding region - 2 groups for each
+```{r}
+leafdat <- rrpp.data.frame("guadua_binary_df" = guadua_binary_df,
+                         "Habit" = as.factor(df_guadualeaf$general_habit),
+                         "Habitat" = as.factor(df_guadualeaf$general_habitat)) 
+model1.rrpp <- lm.rrpp(guadua.dist.matrix ~ leafdat$Habit + leafdat$Habitat, 
+                       print.progress = FALSE)
+anova(model1.rrpp)
+```
+
+# Factorial MANOVA via RRPP excluding region - 3 groups for each 
+```{r}
+leafdat2 <- rrpp.data.frame("guadua_binary_df" = guadua_binary_df,
+                         "Habit" = as.factor(df_guadualeaf$habit),
+                         "Habitat" = as.factor(df_guadualeaf$habitat)) 
+model2.rrpp <- lm.rrpp(guadua.dist.matrix ~ leafdat2$Habit + leafdat2$Habitat, 
+                       print.progress = FALSE)
+anova(model2.rrpp)
+
+```
+
+#Factorial MANOVA via RRPP with region (two groups for habit and habitat)
+```{r}
+leafdat3 <- rrpp.data.frame("guadua_binary_df" = guadua_binary_df,
+                       "Habit" = as.factor(df_guadualeaf$general_habit),
+                       "Habitat" = as.factor(df_guadualeaf$general_habitat),
+                       "Region" = as.factor(df_guadualeaf$region)) 
+model3.rrpp <- lm.rrpp(guadua.dist.matrix ~ leafdat3$Habit + leafdat3$Habitat + leafdat3$Region,  
+                       print.progress = FALSE)
+anova(model3.rrpp)
+
+```
+
+## Model comparison using likelihood ratio test (LTR)
+
+Setup for model comparison:
+```{r}
+guadua.Habit <- lm.rrpp(guadua.dist.matrix ~ leafdat3$Habit, 
+                 print.progress = FALSE)
+guadua.Habitat <- lm.rrpp(guadua.dist.matrix ~ leafdat3$Habitat, 
+                   print.progress = FALSE)
+guadua.Region <- lm.rrpp(guadua.dist.matrix ~ leafdat3$Region, 
+                  print.progress = FALSE)
+guadua.Habit.Region <- lm.rrpp(guadua.dist.matrix ~ leafdat3$Habit + leafdat3$Region, 
+                        print.progress = FALSE)
+guadua.Habitat.Region <- lm.rrpp(guadua.dist.matrix ~ leafdat3$Habitat + leafdat3$Region,
+                          print.progress = FALSE)
+guadua.Habit.Habitat <- lm.rrpp(guadua.dist.matrix ~ leafdat3$Habit + leafdat3$Habitat,
+                         print.progress = FALSE)
+guadua.full <- lm.rrpp(guadua.dist.matrix ~ leafdat3$Habit + leafdat3$Habitat + leafdat3$Region, 
+                print.progress = FALSE)
+```
+#### RRPP MODEL COMPARISON 
+For our model comparison, we used model.comparison() from the RRPP package using the log likelihood method. From this, we are able to determine that the Y.group2 model is the best fit based on it has the highest log-likelihood score and the lowest AIC score. 
+```{r}
+anova(guadua.full)
+
+modelComp1 <- model.comparison(guadua.full, 
+                             guadua.Habit.Habitat,
+                             guadua.Habitat.Region, 
+                             guadua.Habit.Region, 
+                             guadua.Habitat, 
+                             guadua.Habit, 
+                             guadua.Region,
+                             type = "logLik", tol = 0.01)
+modelComp1.summ <- as.data.frame(summary(modelComp1))
+
+pandoc.table(modelComp1.summ,
+             style = "grid", 
+             plain.ascii = TRUE)
+```
+
+
+

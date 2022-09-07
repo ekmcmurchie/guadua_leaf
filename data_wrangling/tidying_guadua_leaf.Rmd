@@ -1,0 +1,94 @@
+---
+title: "Guadua Leaf Micromorphology Tidying"
+author: "Elizabeth McMurchie"
+date: "2022-09-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# *Guadua* leaf tidying
+
+## Read in necessary libraries first (install if necessary):
+```{r}
+library(tidyverse)
+library(readxl)
+library(readr)
+```
+
+## Read in data: 
+```{r}
+foliageleaf <- read_excel("../data/raw/guadua_leaf_raw.xlsx")
+```
+
+
+## Change column names:
+```{r}
+colnames(foliageleaf)
+foliageleaf <- foliageleaf %>% 
+  rename(specimen = Specimen,
+         country = Country, 
+         region = Region, 
+         species = Species,
+         habit = Habit,
+         habitat = Habitat,
+         general_habitat = General_habitat,
+         savanna_presence = Savanna_presence)
+
+colnames(foliageleaf)
+```
+
+## Check structure and change columns to factors
+```{r}
+str(foliageleaf)
+foliageleaf <- foliageleaf %>%
+  mutate(across(c(specimen, country, region, species, habit, habitat, general_habitat, savanna_presence,
+                  ab_papillae_long_cells_stomatal, ab_papillae_long_cells_interstomatal,
+                  ab_prickle, ab_bimicro,	ab_macro, ab_bilobate_intercostal,
+                  ab_ridged_saddle_intercostal, ab_smooth_saddle_intercostal,
+                  ab_vertically_elongated_rounded_intercostal, ab_reniform_intercostal,
+                  ab_nodular_intercostal, ab_bilobate_costal,ab_ridged_saddle_costal,
+                  ab_smooth_saddle_costal, ab_vertically_elongated_rounded_costal, 
+                  ab_reniform_costal, ab_nodular_costal,
+                  ab_triangular_sub_cells, ab_dome_sub_cells,	ab_parallel_sub_cells,
+                  ad_stomata,	ad_stomata_freq, ad_papillae_long_cells_stomatal,
+                  ad_papillae_long_cells_interstomatal, ad_papillae_overarch,
+                  ad_papillae_bulliform, ad_prickle, ad_bimicro, ad_macro,
+                  ad_bilobate_intercostal, ad_ridged_saddle_intercostal,
+                  ad_smooth_saddle_intercostal, ad_vertically_elongated_rounded_intercostal,
+                  ad_reniform_intercostal, ad_nodular_intercostal, ad_bilobate_costal,
+                  ad_ridged_saddle_costal, ad_smooth_saddle_costal,
+                  ad_vertically_elongated_rounded_costal, ad_reniform_costal, ad_nodular_costal,
+                  ad_triangular_sub_cells, ad_dome_sub_cells,
+                  ad_parallel_sub_cells), as.factor)) # changing multiple columns to factors 
+str(foliageleaf)
+```
+
+## Make all names lowercase
+```{r}
+foliageleaf <- foliageleaf %>%
+  mutate(across(c(specimen, country, region, species, habit, habitat, general_habitat, savanna_presence), tolower))
+```
+
+# Add column for general habit and reorder columns
+```{r}
+foliageleaf <- foliageleaf %>% # this step adds a new column for general habit
+  mutate(general_habit = habit) %>%
+  mutate(general_habit = as.factor(general_habit))
+
+foliageleaf <- foliageleaf %>% # this step recodes to combine leaning/climbing and big erect habits
+  mutate(general_habit = fct_recode(general_habit, 
+                           "erect_or_climbing" = "big_erect", 
+                           "erect_or_climbing" = "leaning_climbing"))
+(foliageleaf <- foliageleaf %>% # this step reorders columns so binary data are placed last
+    select(specimen, country, region, species, habit, general_habit, habitat, general_habitat, savanna_presence, everything()))
+```
+
+
+## Write csv file
+```{r}
+write.csv(foliageleaf, "../data/tidy/guadualeaf.csv", row.names = FALSE)
+```
+
