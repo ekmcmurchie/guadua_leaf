@@ -1,0 +1,88 @@
+---
+title: "Guadua Floret Micromorphology Tidying"
+author: "Elizabeth McMurchie"
+date: "2022-09-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# *Guadua* leaf tidying
+
+## Read in necessary libraries first (install if necessary):
+```{r}
+library(tidyverse)
+library(readxl)
+library(readr)
+```
+
+## Read in data: 
+```{r}
+floret <- read_excel("../data/raw/guadua_lemmas_paleas_raw.xlsx")
+
+view(floret)
+```
+
+## Drop notes columns
+```{r}
+floret <- floret %>%
+  select(-c(notes_lemma, notes_palea)) # remove notes columns
+
+df_floret = data.frame(floret, stringsAsFactors = TRUE) # create dataframe
+
+df_floret <- data.frame(lapply(df_floret,as.factor)) # set columns as factors
+
+```
+
+## Check structure and change columns to factors
+```{r}
+str(floret)
+floret <- floret %>%
+  mutate(across(c(specimen, species, country, region,habitat, general_habitat, 
+                  savanna_presence, habit, recorder, lemma_papillae, lemma_prickle,
+                  lemma_bicellular, lemma_macro, lemma_rondel, lemma_cross, lemma_bilobate_vertical,
+                  lemma_bilobate_horizontal, lemma_saddle, lemma_vertical_elongated,
+                  lemma_horizontal_elongated, lemma_reniform_vertical, lemma_reniform_horizontal,
+                  lemma_stomata, lemma_stomata_freq, lemma_subsidiary_triangular, 
+                  lemma_subsidiary_dome, lemma_subsidiary_parallel, 
+                  palea_papillae, palea_margin_prickle, palea_margin_bicellular, palea_margin_macro,
+                  palea_sulcus_prickle, palea_sulcus_bicellular, palea_sulcus_macro,
+                  palea_rondel, palea_cross, palea_bilobate_vertical, palea_bilobate_horizontal, 
+                  palea_saddle, palea_vertical_elongated, palea_horizontal_elongated, 
+                  palea_reniform_vertical, palea_reniform_horizontal,
+                  palea_stomata, palea_stomata_freq, palea_subsidiary_triangular,
+                  palea_subsidiary_dome, palea_subsidiary_parallel), as.factor)) # changing multiple columns to factors 
+str(floret)
+```
+
+## Make all names lowercase
+```{r}
+floret <- floret %>%
+  mutate(across(c(specimen, species, country, region,habitat, general_habitat, 
+                  savanna_presence, habit, recorder), tolower))
+```
+
+# Add column for general habit and reorder columns
+```{r}
+floret <- floret %>% # this step adds a new column for general habit
+  mutate(general_habit = habit) %>%
+  mutate(general_habit = as.factor(general_habit))
+
+floret <- floret %>% # this step recodes to combine leaning/climbing and big erect habits
+  mutate(general_habit = fct_recode(general_habit, 
+                           "erect_or_climbing" = "big_erect", 
+                           "erect_or_climbing" = "leaning_climbing"))
+(floret <- floret %>% # this step reorders columns so binary data are placed last
+    select(specimen, species, country, region,habitat, general_habitat, 
+                  savanna_presence, habit, general_habit, recorder, everything()))
+```
+
+
+## Write csv file
+```{r}
+write.csv(floret, "../data/tidy/guaduafloret.csv", row.names = FALSE)
+```
+
+

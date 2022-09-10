@@ -1,0 +1,129 @@
+---
+title: "Guadua Floret Micomorphology Analysis"
+author: "Elizabeth McMurchie"
+date: "2022-09-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## load appropriate libraries, installing if needed
+```{r}
+library(readxl) #to read in doc
+library(RRPP) #factorial manova uses this 
+library(geomorph) #factorial manova uses this
+library(tidyverse) #includes ggplot2 needed for graphics
+library(ade4) #needed for PCOA
+library(vegan) #needed for PCoA
+library(pander) #for model comparison
+library(readr) #for model comparison
+library(ggcorrplot) #for correlation tables
+```
+
+## Read in data as dataframe
+```{r}
+guaduafloret <- read_csv("../data/tidy/guaduafloret.csv", col_names = TRUE, na = "x")
+```
+## Drop columns with NA and no variation and create dataframe with columsn as factors
+```{r}
+guaduafloret <- guaduafloret %>%
+  select(-c(lemma_stomata, palea_sulcus_prickle, palea_sulcus_macro, palea_stomata_freq, palea_subsidiary_triangular, palea_subsidiary_dome, palea_subsidiary_parallel)) # remove columns with NA or no variation
+
+df_guaduafloret = data.frame(guaduafloret, stringsAsFactors = TRUE) # create dataframe
+
+df_guaduafloret <- data.frame(lapply(df_guaduafloret,as.factor)) # set columns as factors
+
+```
+
+## Analysis
+
+### Correlation
+The correlation is necessary to complete the PCoA. Additionally, viewing the correlation dataframe is useful for understanding which traits are correlated.
+```{r}
+guadua_floret_y_binary <- df_guaduafloret[,11:ncol(df_guaduafloret)] # reads in the binary data only 
+guadua_floret_y_binary_df <- data.frame(lapply(guadua_floret_y_binary,function(x) as.numeric(levels(x))[x]))
+correlation_y_guadua_floret <- data.frame(cor(guadua_floret_y_binary_df)) #calculated the correlation of the Y values
+```
+
+### PCoA 
+The distance matrix for the binary data is obtained using simple matching coefficient. The PCoA from the distance matrix can be used to visualize the pairwise distances between the micromorphology of individual *Guadua* specimens.
+```{r}
+guadua_floret_y_dist <- dist.binary(guadua_floret_y_binary_df, method = 2, diag = FALSE, upper = FALSE) # convert to distances using simple matching coefficient
+guadua_floret_y_dist_matrix <- as.matrix(guadua_floret_y_dist) # create matrix using simple matching distances
+floret_PCoA <- cmdscale(guadua_floret_y_dist_matrix, eig = TRUE, x.ret = TRUE, list. = TRUE) #from vegan - run PcoA
+```
+
+# Factorial MANOVA via RRPP excluding region - 2 groups for each
+```{r}
+floretdat <- rrpp.data.frame("guadua_floret_y_binary_df" = guadua_floret_y_binary_df,
+                         "Habit" = as.factor(df_guaduafloret$general_habit),
+                         "Habitat" = as.factor(df_guaduafloret$general_habitat)) 
+model1.rrpp <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat$Habit + floretdat$Habitat, 
+                       print.progress = FALSE)
+anova(model1.rrpp)
+```
+
+# Factorial MANOVA via RRPP excluding region - 3 groups for each 
+```{r}
+floretdat2 <- rrpp.data.frame("guadua_floret_y_binary_df" = guadua_floret_y_binary_df,
+                         "Habit" = as.factor(df_guaduafloret$habit),
+                         "Habitat" = as.factor(df_guaduafloret$habitat)) 
+model2.rrpp <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat2$Habit + floretdat2$Habitat, 
+                       print.progress = FALSE)
+anova(model2.rrpp)
+
+```
+
+#Factorial MANOVA via RRPP with region (two groups for habit and habitat)
+```{r}
+floretdat3 <- rrpp.data.frame("guadua_floret_y_binary_df" = guadua_floret_y_binary_df,
+                       "Habit" = as.factor(df_guaduafloret$general_habit),
+                       "Habitat" = as.factor(df_guaduafloret$general_habitat),
+                       "Region" = as.factor(df_guaduafloret$region)) 
+model3.rrpp <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat3$Habit + floretdat3$Habitat + floretdat3$Region,  
+                       print.progress = FALSE)
+anova(model3.rrpp)
+
+```
+
+## Model comparison using likelihood ratio test (LTR)
+
+Setup for model comparison:
+```{r}
+guadua_Habit <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat3$Habit, 
+                 print.progress = FALSE)
+guadua_Habitat <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat3$Habitat, 
+                   print.progress = FALSE)
+guadua_Region <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat3$Region, 
+                  print.progress = FALSE)
+guadua_Habit_Region <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat3$Habit + floretdat3$Region, 
+                        print.progress = FALSE)
+guadua_Habitat_Region <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat3$Habitat + floretdat3$Region,
+                          print.progress = FALSE)
+guadua_Habit_Habitat <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat3$Habit + floretdat3$Habitat,
+                         print.progress = FALSE)
+guadua_full <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat3$Habit + floretdat3$Habitat + floretdat3$Region, 
+                print.progress = FALSE)
+```
+#### RRPP MODEL COMPARISON 
+For our model comparison, we used model.comparison() from the RRPP package using the log likelihood method. From this, we are able to determine that the Y.group2 model is the best fit based on it has the highest log-likelihood score and the lowest AIC score. 
+```{r}
+anova(guadua_full)
+
+modelComp1 <- model.comparison(guadua_full, 
+                             guadua_Habit_Habitat,
+                             guadua_Habitat_Region, 
+                             guadua_Habit_Region, 
+                             guadua_Habitat, 
+                             guadua_Habit, 
+                             guadua_Region,
+                             type = "logLik", tol = 0.01)
+modelComp1.summ <- as.data.frame(summary(modelComp1))
+
+pandoc.table(modelComp1.summ,
+             style = "grid", 
+             plain.ascii = TRUE)
+```
