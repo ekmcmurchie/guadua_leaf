@@ -14,8 +14,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Read in necessary libraries first (install if necessary):
 ```{r}
 library(tidyverse)
-library(readxl)
-library(readr)
+library(readxl) #noncore tidyverse to open excel file
+library(readr) #part of core tidyverse
 ```
 
 ## Read in data: 
@@ -34,8 +34,7 @@ foliageleaf <- foliageleaf %>%
          species = Species,
          habit = Habit,
          habitat = Habitat,
-         general_habitat = General_habitat,
-         savanna_presence = Savanna_presence)
+         general_habitat = General_habitat)
 
 colnames(foliageleaf)
 ```
@@ -44,8 +43,11 @@ colnames(foliageleaf)
 ```{r}
 str(foliageleaf)
 foliageleaf <- foliageleaf %>%
-  mutate(across(c(specimen, country, region, species, habit, habitat, general_habitat, savanna_presence,
+  mutate(across(c(specimen, country, region, species, habit, habitat, general_habitat,
                   ab_papillae_long_cells_stomatal, ab_papillae_long_cells_interstomatal,
+                  ab_bifurcated_papillae_long_cells_stomatal,
+                  ab_bifurcated_papillae_long_cells_interstomatal,
+                  ab_branch_papillae_long_cells_stomatal, ab_branch_papillae_long_cells_interstomatal,
                   ab_prickle, ab_bimicro,	ab_macro, ab_bilobate_intercostal,
                   ab_ridged_saddle_intercostal, ab_smooth_saddle_intercostal,
                   ab_vertically_elongated_rounded_intercostal, ab_reniform_intercostal,
@@ -54,8 +56,11 @@ foliageleaf <- foliageleaf %>%
                   ab_reniform_costal, ab_nodular_costal,
                   ab_triangular_sub_cells, ab_dome_sub_cells,	ab_parallel_sub_cells,
                   ad_stomata,	ad_stomata_freq, ad_papillae_long_cells_stomatal,
-                  ad_papillae_long_cells_interstomatal, ad_papillae_overarch,
-                  ad_papillae_bulliform, ad_prickle, ad_bimicro, ad_macro,
+                  ad_papillae_long_cells_interstomatal, ad_bifurcated_papillae_long_cells_stomatal,
+                  ad_bifurcated_papillae_long_cells_interstomatal,
+                  ad_branch_papillae_long_cells_stomatal, ad_branch_papillae_long_cells_interstomatal,
+                  ad_papillae_overarch, ad_papillae_bulliform, 
+                  ad_prickle, ad_bimicro, ad_macro,
                   ad_bilobate_intercostal, ad_ridged_saddle_intercostal,
                   ad_smooth_saddle_intercostal, ad_vertically_elongated_rounded_intercostal,
                   ad_reniform_intercostal, ad_nodular_intercostal, ad_bilobate_costal,
@@ -69,7 +74,7 @@ str(foliageleaf)
 ## Make all names lowercase
 ```{r}
 foliageleaf <- foliageleaf %>%
-  mutate(across(c(specimen, country, region, species, habit, habitat, general_habitat, savanna_presence), tolower))
+  mutate(across(c(specimen, country, region, species, habit, habitat, general_habitat), tolower))
 ```
 
 # Add column for general habit and reorder columns
@@ -83,7 +88,8 @@ foliageleaf <- foliageleaf %>% # this step recodes to combine leaning/climbing a
                            "erect_or_climbing" = "big_erect", 
                            "erect_or_climbing" = "leaning_climbing"))
 (foliageleaf <- foliageleaf %>% # this step reorders columns so binary data are placed last
-    select(specimen, country, region, species, habit, general_habit, habitat, general_habitat, savanna_presence, everything()))
+    select(specimen, country, region, species, habit, general_habit, habitat, general_habitat, 
+           everything()))
 ```
 
 

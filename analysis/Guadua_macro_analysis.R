@@ -3,7 +3,7 @@ library(readxl)
 library(RRPP)
 library(tidyverse)
 
-mydat <- read_xlsx("data/raw/Guadua_palea_macro.xlsx")
+mydat <- read_xlsx("../data/raw/Guadua_palea_macro.xlsx")
 
 view(mydat)
 
@@ -69,4 +69,14 @@ fit2region <- lm.rrpp(morph ~ region/ind, data = rdf, SS.type = "III")
 anova(fit2region,error = c("region:ind", "Residuals"))
 
 
+###### ADDED BY DCA
 
+# Pairwise comparison example
+
+reveal.model.designs(fit2region)
+
+null <- lm.rrpp(morph ~ region:ind)
+
+PW <- pairwise(fit2region,fit.null = null,groups = region)
+
+summary(PW,test.type = "dist") #simple comparison of groups

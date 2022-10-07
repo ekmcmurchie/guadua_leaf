@@ -11,15 +11,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## load appropriate libraries, installing if needed
 ```{r}
-library(readxl) #to read in doc
 library(RRPP) #factorial manova uses this 
 library(geomorph) #factorial manova uses this
-library(tidyverse) #includes ggplot2 needed for graphics
+library(tidyverse) #general tidyverse packages
 library(ade4) #needed for PCOA
 library(vegan) #needed for PCoA
 library(pander) #for model comparison
-library(readr) #for model comparison
-library(ggcorrplot) #for correlation tables
 ```
 
 ## Read in data as dataframe
@@ -44,7 +41,7 @@ df_guadualeaf <- data.frame(lapply(df_guadualeaf,as.factor)) # set columns as fa
 ### Correlation
 The correlation is necessary to complete the PCoA. Additionally, viewing the correlation dataframe is useful for understanding which traits are correlated.
 ```{r}
-guadua_y_binary <- df_guadualeaf[,10:ncol(df_guadualeaf)] # reads in the binary data only 
+guadua_y_binary <- df_guadualeaf[,9:ncol(df_guadualeaf)] # reads in the binary data only 
 guadua_y_binary_df <- data.frame(lapply(guadua_y_binary,function(x) as.numeric(levels(x))[x]))
 correlation_y_guadua <- data.frame(cor(guadua_y_binary_df)) #calculated the correlation of the Y values
 ```
