@@ -105,9 +105,11 @@ guadua_Habit_Habitat <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat3$Habit +
 guadua_full <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat3$Habit + floretdat3$Habitat + floretdat3$Region, 
                 print.progress = FALSE)
 ```
+
 #### RRPP MODEL COMPARISON 
 For our model comparison, we used model.comparison() from the RRPP package using the log likelihood method. From this, we are able to determine that the Y.group2 model is the best fit based on it has the highest log-likelihood score and the lowest AIC score. 
 ```{r}
+# Including region
 anova(guadua_full)
 
 modelComp1 <- model.comparison(guadua_full, 
@@ -121,6 +123,21 @@ modelComp1 <- model.comparison(guadua_full,
 modelComp1.summ <- as.data.frame(summary(modelComp1))
 
 pandoc.table(modelComp1.summ,
+             style = "grid", 
+             plain.ascii = TRUE)
+
+
+# This one excluding region, which wasn't significant 
+
+anova(guadua_Habit_Habitat)
+
+modelComp2 <- model.comparison(guadua_Habit_Habitat,
+                             guadua_Habitat, 
+                             guadua_Habit, 
+                             type = "logLik", tol = 0.01)
+modelComp2.summ <- as.data.frame(summary(modelComp2))
+
+pandoc.table(modelComp2.summ,
              style = "grid", 
              plain.ascii = TRUE)
 ```

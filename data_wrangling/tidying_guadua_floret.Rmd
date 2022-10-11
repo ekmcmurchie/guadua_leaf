@@ -41,14 +41,14 @@ df_floret <- data.frame(lapply(df_floret,as.factor)) # set columns as factors
 str(floret)
 floret <- floret %>%
   mutate(across(c(specimen, species, country, region,habitat, general_habitat, 
-                  habit, recorder, lemma_papillae, lemma_papillae_bifurcated,
+                  habit, recorder, lemma_papillae_simple, lemma_papillae_bifurcated,
                   lemma_papillae_branch, lemma_prickle,lemma_bicellular, lemma_macro,
                   lemma_rondel, lemma_cross, lemma_bilobate_vertical,
                   lemma_bilobate_horizontal, lemma_saddle, lemma_vertical_elongated,
                   lemma_horizontal_elongated, lemma_reniform_vertical, lemma_reniform_horizontal,
                   lemma_stomata, lemma_stomata_freq, lemma_subsidiary_triangular, 
                   lemma_subsidiary_dome, lemma_subsidiary_parallel, 
-                  palea_papillae, palea_papillae_bifurcated, palea_papillae_branch,
+                  palea_papillae_simple, palea_papillae_bifurcated, palea_papillae_branch,
                   palea_margin_prickle, palea_margin_bicellular, palea_margin_macro,
                   palea_sulcus_prickle, palea_sulcus_bicellular, palea_sulcus_macro,
                   palea_rondel, palea_cross, palea_bilobate_vertical, palea_bilobate_horizontal, 

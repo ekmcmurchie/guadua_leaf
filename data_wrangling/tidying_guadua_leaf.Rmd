@@ -44,7 +44,7 @@ colnames(foliageleaf)
 str(foliageleaf)
 foliageleaf <- foliageleaf %>%
   mutate(across(c(specimen, country, region, species, habit, habitat, general_habitat,
-                  ab_papillae_long_cells_stomatal, ab_papillae_long_cells_interstomatal,
+                  ab_simple_papillae_long_cells_stomatal, ab_simple_papillae_long_cells_interstomatal,
                   ab_bifurcated_papillae_long_cells_stomatal,
                   ab_bifurcated_papillae_long_cells_interstomatal,
                   ab_branch_papillae_long_cells_stomatal, ab_branch_papillae_long_cells_interstomatal,
@@ -55,8 +55,8 @@ foliageleaf <- foliageleaf %>%
                   ab_smooth_saddle_costal, ab_vertically_elongated_rounded_costal, 
                   ab_reniform_costal, ab_nodular_costal,
                   ab_triangular_sub_cells, ab_dome_sub_cells,	ab_parallel_sub_cells,
-                  ad_stomata,	ad_stomata_freq, ad_papillae_long_cells_stomatal,
-                  ad_papillae_long_cells_interstomatal, ad_bifurcated_papillae_long_cells_stomatal,
+                  ad_stomata,	ad_stomata_freq, ad_simple_papillae_long_cells_stomatal,
+                  ad_simple_papillae_long_cells_interstomatal, ad_bifurcated_papillae_long_cells_stomatal,
                   ad_bifurcated_papillae_long_cells_interstomatal,
                   ad_branch_papillae_long_cells_stomatal, ad_branch_papillae_long_cells_interstomatal,
                   ad_papillae_overarch, ad_papillae_bulliform, 
