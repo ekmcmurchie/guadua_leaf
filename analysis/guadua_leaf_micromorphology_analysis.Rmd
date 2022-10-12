@@ -87,6 +87,19 @@ anova(model3.rrpp)
 
 ```
 
+#Pairwise comparisons for region
+```{r}
+reveal.model.designs(model3.rrpp) # This step appears not to be working properly
+
+null <- lm.rrpp(guadua_y_dist_matrix ~ region)
+
+PW <- pairwise(model3.rrpp,fit.null = null,groups = region)
+
+summary(PW,test.type = "dist") 
+
+```
+
+
 ## Model comparison using likelihood ratio test (LTR)
 
 Setup for model comparison:

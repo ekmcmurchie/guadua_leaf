@@ -3,7 +3,7 @@ library(readxl)
 library(RRPP)
 library(tidyverse)
 
-mydat <- read_xlsx("../data/raw/Guadua_palea_macro.xlsx")
+mydat <- read_xlsx("./data/raw/Guadua_palea_macro.xlsx")
 
 view(mydat)
 
