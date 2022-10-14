@@ -217,7 +217,7 @@ ggsave("floretregion.pdf", plot = regionpcoa, width = 6, height = 4, units = "in
 ```
 
 ### Scree Plot From the PCoA 
-From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axis 1 is responsible for the majority of variation in the PCoA, followed by a steep drop in variation. By the 20th axis, variation is arguably negligible. Elbow is at approximately the fourth or fifth principal coordinate axis.
+From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axes 1 and 2 are responsible for less than half of variation in the PCoA. Elbow is at approximately the seventh principal coordinate axis. Variation becomes negligible at approximately the 30th principal coordinate axis.
 ```{r}
 eig_df <- data.frame( x_values = c(1:length(floret_PCoA$eig)) , eig_value = c(floret_PCoA$eig))
 scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +

@@ -107,7 +107,7 @@ guadua_full <- lm.rrpp(guadua_floret_y_dist_matrix ~ floretdat3$Habit + floretda
 ```
 
 #### RRPP MODEL COMPARISON 
-For our model comparison, we used model.comparison() from the RRPP package using the log likelihood method. From this, we are able to determine that the Y.group2 model is the best fit based on it has the highest log-likelihood score and the lowest AIC score. 
+For our model comparison, we used model.comparison() from the RRPP package using the log likelihood method. From this, we are able to determine that the Habit model is the best fit based on it has the highest log-likelihood score and the lowest AIC score (when region is excluded). 
 ```{r}
 # Including region
 anova(guadua_full)
