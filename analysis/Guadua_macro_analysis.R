@@ -71,12 +71,25 @@ anova(fit2region,error = c("region:ind", "Residuals"))
 
 ###### ADDED BY DCA
 
-# Pairwise comparison example
+# note mixed model shows significant differences in macromorphology based on region
+# but no pairwise differences
 
+### 1: treat as mixed model, with individual nested within region
+# mixed-model for region
+fit2region <- lm.rrpp(morph ~ region/ind, data = rdf, SS.type = "III")
+anova(fit2region,error = c("region:ind", "Residuals"))
 reveal.model.designs(fit2region)
-
 null <- lm.rrpp(morph ~ region:ind)
-
 PW <- pairwise(fit2region,fit.null = null,groups = region)
-
 summary(PW,test.type = "dist") #simple comparison of groups
+
+summary(PW,test.type = "var") #there are hints that disparity may differ among regions
+
+# Here we're attempting to find out why mixed model shows region is significant
+# when no pairwise differences were seen 
+
+### 2: use means per species: implies little difference among regions
+morph.mn <- pairwise(lm.rrpp(morph~ind, iter=0), groups = rdf$ind)$LS.means[[1]]
+region.mn <- as.factor(by(region,ind,unique))
+fit.mn <- lm.rrpp(morph.mn~region.mn)
+anova(fit.mn)
