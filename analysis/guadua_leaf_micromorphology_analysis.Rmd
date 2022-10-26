@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## load appropriate libraries, installing if needed
+## Load appropriate libraries, installing if needed
 ```{r}
 library(RRPP) #factorial manova uses this 
 library(geomorph) #factorial manova uses this
@@ -38,17 +38,12 @@ df_guadualeaf <- data.frame(lapply(df_guadualeaf,as.factor)) # set columns as fa
 
 ## Analysis
 
-### Correlation
-The correlation is necessary to complete the PCoA. Additionally, viewing the correlation dataframe is useful for understanding which traits are correlated.
-```{r}
-guadua_y_binary <- df_guadualeaf[,9:ncol(df_guadualeaf)] # reads in the binary data only 
-guadua_y_binary_df <- data.frame(lapply(guadua_y_binary,function(x) as.numeric(levels(x))[x]))
-correlation_y_guadua <- data.frame(cor(guadua_y_binary_df)) #calculated the correlation of the Y values
-```
 
 ### PCoA 
 The distance matrix for the binary data is obtained using simple matching coefficient. The PCoA from the distance matrix can be used to visualize the pairwise distances between the micromorphology of individual *Guadua* specimens.
 ```{r}
+guadua_y_binary <- df_guadualeaf[,9:ncol(df_guadualeaf)] # reads in the binary data only 
+guadua_y_binary_df <- data.frame(lapply(guadua_y_binary,function(x) as.numeric(levels(x))[x]))
 guadua_y_dist <- dist.binary(guadua_y_binary_df, method = 2, diag = FALSE, upper = FALSE) # convert to distances using simple matching coefficient
 guadua_y_dist_matrix <- as.matrix(guadua_y_dist) # create matrix using simple matching distances
 PCoA <- cmdscale(guadua_y_dist_matrix, eig = TRUE, x.ret = TRUE, list. = TRUE) #from vegan - run PcoA
@@ -87,13 +82,22 @@ anova(model3.rrpp)
 
 ```
 
-#Pairwise comparisons for region
+## Pairwise comparisons for region
 ```{r}
-reveal.model.designs(model3.rrpp) # This step appears not to be working properly
+### Factorial model. Need your data matrix in the rdf
+rdf <- rrpp.data.frame(morph.dist = guadua_y_dist, 
+                       habit = df_guadualeaf$general_habit,
+                       habitat = df_guadualeaf$general_habitat,
+                       region = df_guadualeaf$region)
+fit <- lm.rrpp(morph.dist ~ habit + habitat + region, data = rdf)
 
-null <- lm.rrpp(guadua_y_dist_matrix ~ region)
+anova(fit)
 
-PW <- pairwise(model3.rrpp,fit.null = null,groups = region)
+reveal.model.designs(fit) # This step appears not to be working properly
+
+null <- lm.rrpp(morph.dist ~ region, data = rdf)
+
+PW <- pairwise(fit,fit.null = null,groups = rdf$region)
 
 summary(PW,test.type = "dist") 
 
