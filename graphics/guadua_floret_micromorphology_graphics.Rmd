@@ -25,7 +25,7 @@ guaduafloret <- read_csv("../data/tidy/guaduafloret.csv", col_names = TRUE, na =
 ## Drop columns with NA and no variation and create dataframe with columsn as factors
 ```{r}
 guaduafloret <- guaduafloret %>%
-  select(-c(lemma_stomata, palea_sulcus_prickle, palea_sulcus_macro, palea_stomata_freq, palea_subsidiary_triangular, palea_subsidiary_dome, palea_subsidiary_parallel)) # remove columns with NA or no variation
+  select(-c(lemma_stomata, palea_sulcus_macro, palea_stomata_freq, palea_subsidiary_triangular, palea_subsidiary_dome, palea_subsidiary_parallel)) # remove columns with NA or no variation
 
 df_guaduafloret = data.frame(guaduafloret, stringsAsFactors = TRUE) # create dataframe
 
@@ -50,9 +50,17 @@ floretcorrs <- ggcorrplot(correlation_y_guadua_floret, hc.order = TRUE, lab = TR
 
 ggsave("floretcorrplot.pdf", plot = floretcorrs, width = 20, height = 18, units = "in", dpi = 600)
 
+ggsave("floretcorrplot.jpg", plot = floretcorrs, width = 20, height = 18, units = "in", dpi = 600)
+
+ggsave("floretcorrplot.tiff", plot = floretcorrs, width = 20, height = 18, units = "in", dpi = 600)
+
 floretcorrs2 <- ggcorrplot(correlation_y_guadua_floret, hc.order = TRUE, lab = TRUE, type = "upper")
 
 ggsave("floretcorrplot2.pdf", plot = floretcorrs2, width = 20, height = 18, units = "in", dpi = 600)
+
+ggsave("floretcorrplot2.tiff", plot = floretcorrs2, width = 20, height = 18, units = "in", dpi = 600)
+
+ggsave("floretcorrplot2.jpg", plot = floretcorrs2, width = 20, height = 18, units = "in", dpi = 600)
 ```
 
 ### PCoA 
@@ -91,6 +99,8 @@ habitatpcoa <- nice_df %>%
   )
 
 ggsave("florethabits3.pdf", plot = habitatpcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("florethabits3.tiff", plot = habitatpcoa, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
 # PCoA grouped by habit (2 categories)
@@ -120,6 +130,8 @@ habits2pcoa <- nice_df %>%
   )
 
 ggsave("florethabits2.pdf", plot = habits2pcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("florethabits2.tiff", plot = habits2pcoa, width = 6, height = 4, units = "in", dpi = 600)
 
 ```
 
@@ -152,6 +164,8 @@ habitatspcoa <- nice_df %>%
 
 ggsave("florethabitat3.pdf", plot = habitatspcoa, width = 6, height = 4, units = "in", dpi = 600)
 
+ggsave("florethabitat3.tiff", plot = habitatspcoa, width = 6, height = 4, units = "in", dpi = 600)
+
 ```
 
 # PCoA grouped by habitat (2 categories)
@@ -182,6 +196,8 @@ habitats2pcoa <- nice_df %>%
 
 
 ggsave("florethabitat2.pdf", plot = habitats2pcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("florethabitat2.tiff", plot = habitats2pcoa, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
 # PCoA grouped by region
@@ -217,7 +233,7 @@ ggsave("floretregion.pdf", plot = regionpcoa, width = 6, height = 4, units = "in
 ```
 
 ### Scree Plot From the PCoA 
-From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axes 1 and 2 are responsible for less than half of variation in the PCoA. Elbow is at approximately the seventh principal coordinate axis. Variation becomes negligible at approximately the 30th principal coordinate axis.
+From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axes 1 and 2 are responsible for less than half of variation in the PCoA. Elbow is at approximately the eighth principal coordinate axis. Variation becomes negligible at approximately the 30th principal coordinate axis.
 ```{r}
 eig_df <- data.frame( x_values = c(1:length(floret_PCoA$eig)) , eig_value = c(floret_PCoA$eig))
 scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +
@@ -233,5 +249,7 @@ scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +
   )
 
 ggsave("floretscree.pdf", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("floretscree.tiff", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
 ```
 

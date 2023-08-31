@@ -144,4 +144,34 @@ pandoc.table(modelComp1.summ,
 ```
 
 
+## Model comparison using likelihood ratio test (LTR) excluding region
+
+Setup for model comparison:
+```{r}
+guadua_Habit2 <- lm.rrpp(guadua_y_dist_matrix ~ leafdat3$Habit, 
+                 print.progress = FALSE)
+guadua_Habitat2 <- lm.rrpp(guadua_y_dist_matrix ~ leafdat3$Habitat, 
+                   print.progress = FALSE)
+guadua_Habit_Habitat2 <- lm.rrpp(guadua_y_dist_matrix ~ leafdat3$Habit + leafdat3$Habitat,
+                         print.progress = FALSE)
+guadua_full2 <- lm.rrpp(guadua_y_dist_matrix ~ leafdat3$Habit + leafdat3$Habitat, 
+                print.progress = FALSE)
+
+```
+
+#### RRPP MODEL COMPARISON excluding region
+For our model comparison, we used model.comparison() from the RRPP package using the log likelihood method. From this, we are able to determine that the model including habit and habitat is the best fit based on it has the highest log-likelihood score and the lowest AIC score. 
+```{r}
+anova(guadua_full2)
+
+modelComp2 <- model.comparison(guadua_full2, 
+                             guadua_Habitat2, 
+                             guadua_Habit2, 
+                             type = "logLik", tol = 0.01)
+modelComp2.summ <- as.data.frame(summary(modelComp2))
+
+pandoc.table(modelComp2.summ,
+             style = "grid", 
+             plain.ascii = TRUE)
+```
 
