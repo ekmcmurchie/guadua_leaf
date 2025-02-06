@@ -2,7 +2,9 @@
 title: "Guadua Floret Micromorphology Graphics"
 author: "Elizabeth McMurchie"
 date: "2022-09-10"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -22,7 +24,7 @@ library(ggcorrplot) #for correlation tables
 guaduafloret <- read_csv("../data/tidy/guaduafloret.csv", col_names = TRUE, na = "x")
 ```
 
-## Drop columns with NA and no variation and create dataframe with columsn as factors
+## Drop columns with NA and no variation and create dataframe with columns as factors
 ```{r}
 guaduafloret <- guaduafloret %>%
   select(-c(lemma_stomata, lemma_stomata_freq, palea_sulcus_macro, palea_stomata_freq, palea_subsidiary_triangular, palea_subsidiary_dome, palea_subsidiary_parallel)) # remove columns with NA or no variation
@@ -34,15 +36,17 @@ df_guaduafloret <- data.frame(lapply(df_guaduafloret,as.factor)) # set columns a
 ```
 
 ### Correlation
-Viewing the correlation dataframe is useful for understanding which traits are correlated.
+Viewing the correlation dataframe is useful for understanding which traits are correlated. The two-sided correlation plot was used as Appendix Figure 2 (Figure A.2) in the manuscript. The one-sided correlation plot was not used in the manuscript; this image was used to more easily visualize each correlation.
 ```{r}
 guadua_floret_y_binary <- df_guaduafloret[,10:ncol(df_guaduafloret)] # reads in the binary data only 
 guadua_floret_y_binary_df <- data.frame(lapply(guadua_floret_y_binary,function(x) as.numeric(levels(x))[x]))
 correlation_y_guadua_floret <- data.frame(cor(guadua_floret_y_binary_df)) #calculated the correlation of the Y values
 
-view(correlation_y_guadua_floret) #viewing basic correlation table
+#view(correlation_y_guadua_floret) #viewing basic correlation table
 
 #ggcorrplot alows us to view correlation table with colors indicating correlation values
+
+#Two-sided correlation plot
 
 ggcorrplot(correlation_y_guadua_floret, hc.order = TRUE, lab = TRUE)
 
@@ -53,6 +57,8 @@ ggsave("floretcorrplot.pdf", plot = floretcorrs, width = 20, height = 18, units 
 ggsave("floretcorrplot.jpg", plot = floretcorrs, width = 20, height = 18, units = "in", dpi = 600)
 
 ggsave("floretcorrplot.tiff", plot = floretcorrs, width = 20, height = 18, units = "in", dpi = 600)
+
+#One-sided correlation plot
 
 floretcorrs2 <- ggcorrplot(correlation_y_guadua_floret, hc.order = TRUE, lab = TRUE, type = "upper")
 
@@ -72,6 +78,7 @@ floret_PCoA <- cmdscale(guadua_floret_y_dist_matrix, eig = TRUE, x.ret = TRUE, l
 ```
 
 # PCoA grouped by habit (3 categories)
+For this PCoA, individual specimens are colored by the habit typical of their species. Three habitat groups were used: big and erect, leaning/climbing, and small arching. This PCoA is used as Figure 6 in the manuscript.
 ```{r}
 group.colors <- c("big_erect" = "#7b3294", "leaning_climbing" = "#1b7837",
                   "small_arching" = "#f1a340") #to set colors
@@ -83,10 +90,10 @@ habitatpcoa <- nice_df %>%
   ggplot(aes(X1, X2)) +
   geom_point(aes(color = habit, shape = habit), size = 2) +
   scale_color_manual(name = "Habit", breaks = c("big_erect", "leaning_climbing", "small_arching"),
-                     labels = c("Big erect", "Leaning/climbing", "Small arching"),
+                     labels = c("Tall and erect", "Leaning/climbing", "Small arching"),
                      values = group.colors) + 
   scale_shape_manual(name = "Habit", breaks = c("big_erect", "leaning_climbing", "small_arching"),
-                     labels = c("Big erect", "Leaning/climbing", "Small arching"),
+                     labels = c("Tall and erect", "Leaning/climbing", "Small arching"),
                      values = c(15, 17, 19)) + 
   theme_minimal() +
   theme(
@@ -98,12 +105,15 @@ habitatpcoa <- nice_df %>%
     y = "Axis 2"
   )
 
+#Remove '#' from below to save images.
+
 ggsave("florethabits3.pdf", plot = habitatpcoa, width = 6, height = 4, units = "in", dpi = 600)
 
 ggsave("florethabits3.tiff", plot = habitatpcoa, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
 # PCoA grouped by habit (2 categories)
+For this PCoA, individual specimens are colored by the habit typical of their species. Two habitat groups were used: big and erect or leaning/climbing and small arching. This PCoA was not used in the manuscript; it was simply used to visualize the broader categories used for data analysis.
 ```{r}
 group.colors2 <- c("erect_or_climbing" = "#7b3294","small_arching" = "#f1a340")
 
@@ -129,6 +139,8 @@ habits2pcoa <- nice_df %>%
     y = "Axis 2"
   )
 
+#Remove '#' from below to save images.
+
 ggsave("florethabits2.pdf", plot = habits2pcoa, width = 6, height = 4, units = "in", dpi = 600)
 
 ggsave("florethabits2.tiff", plot = habits2pcoa, width = 6, height = 4, units = "in", dpi = 600)
@@ -136,6 +148,7 @@ ggsave("florethabits2.tiff", plot = habits2pcoa, width = 6, height = 4, units = 
 ```
 
 # PCoA grouped by habitat (3 categories)
+For this PCoA, individual specimens are colored by the habitat typical of their species. Three habitat groups were used: Forest, river, and savanna. This PCoA is used as Figure 5 in the manuscript.
 ```{r}
 group.colors3 <- c("forest" = "#7b3294", "river" = "#1b7837",
                    "savanna" = "#f1a340")
@@ -162,6 +175,8 @@ habitatspcoa <- nice_df %>%
     y = "Axis 2"
   )
 
+#Remove '#' from below to save images.
+
 ggsave("florethabitat3.pdf", plot = habitatspcoa, width = 6, height = 4, units = "in", dpi = 600)
 
 ggsave("florethabitat3.tiff", plot = habitatspcoa, width = 6, height = 4, units = "in", dpi = 600)
@@ -169,6 +184,7 @@ ggsave("florethabitat3.tiff", plot = habitatspcoa, width = 6, height = 4, units 
 ```
 
 # PCoA grouped by habitat (2 categories)
+For this PCoA, individual specimens are colored by the habitat typical of their species. Two habitat groups were used: Forest or river and savanna. This PCoA was not used in the manuscript; it was simply used to visualize the broader categories later used for data analysis.
 ```{r}
 group.colors4 <- c("general_forest" = "#7b3294","savanna" = "#f1a340")
 
@@ -194,6 +210,7 @@ habitats2pcoa <- nice_df %>%
     y = "Axis 2"
   )
 
+#Remove '#' from below to save images.
 
 ggsave("florethabitat2.pdf", plot = habitats2pcoa, width = 6, height = 4, units = "in", dpi = 600)
 
@@ -201,6 +218,7 @@ ggsave("florethabitat2.tiff", plot = habitats2pcoa, width = 6, height = 4, units
 ```
 
 # PCoA grouped by region
+For this PCoA, individual specimens are colored by general region in which the specimen was collected. Four general regions were used: Andes, Central America, and Eastern South America. Assignment of region to each specimen can be seen in 'specimen_data.xls' in the 'documents' folder. This PCoA was not used in the manuscript. We did not expect to see any grouping based on region, as each region contains a variety of species of different habits and habitats.
 ```{r}
 group.colors5 <- c("andes" = "#7b3294", "central_america" = "#1b7837",
                    "eastern_south_america" = "#af8dc3", "mexico" = "#f1a340")
@@ -229,13 +247,15 @@ regionpcoa <- nice_df %>%
     y = "Axis 2"
   )
 
+#Remove '#' from below to save images.
+
 ggsave("floretregion.pdf", plot = regionpcoa, width = 6, height = 4, units = "in", dpi = 600)
 
 ggsave("floretregion.tiff", plot = regionpcoa, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
 ### Scree Plot From the PCoA 
-From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axes 1 and 2 are responsible for less than half of variation in the PCoA. Elbow is at approximately the eighth principal coordinate axis. Variation becomes negligible at approximately the 30th principal coordinate axis.
+From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axes 1 and 2 are responsible for less than half of variation in the PCoA. Elbow is at approximately the eighth principal coordinate axis. Variation becomes negligible at approximately the 30th principal coordinate axis. This image was used as Figure A.4 - Appendix Figure 4 in the manuscript.
 ```{r}
 eig_df <- data.frame( x_values = c(1:length(floret_PCoA$eig)) , eig_value = c(floret_PCoA$eig))
 scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +
@@ -255,3 +275,241 @@ ggsave("floretscree.pdf", plot = scree, width = 6, height = 4, units = "in", dpi
 ggsave("floretscree.tiff", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
+
+## Pie charts - specimens from forest and riparian species
+
+##Filtering dataframe for forest and riparian species only
+```{r}
+#Filter dataframe of foliar micromorphology to include only forest and riparian species
+guaduafloret_general_forest <- df_guaduafloret %>%
+  filter(general_habitat == "general_forest")
+```
+
+##General forest: Pie chart of simple papillae on abaxial lemma surface presence/absence
+```{r}
+#Group by simple papillae on abaxial lemma surface only and obtain percentage present/absent
+guaduafloret_general_forest_lemma_papillae_simple_per <- guaduafloret_general_forest %>% 
+  group_by(lemma_papillae_simple) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guaduafloret_general_forest_lemma_papillae_simple_per)
+
+#Create labeled pie chart of percentage of general forest specimens with simple papillae on lemma abaxial surface
+ggplot(guaduafloret_general_forest_lemma_papillae_simple_per, aes(x = "", y = perc, fill = lemma_papillae_simple)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae absent or present on lemma abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_lemma_simple_papillae <- ggplot(guaduafloret_general_forest_lemma_papillae_simple_per, aes(x = "", y = perc, fill = lemma_papillae_simple)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae on lemma abaxial surface")) +
+  ggtitle("Forest and Riparian") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_lemma_simple_papillae.tiff", plot = forest_pie_lemma_simple_papillae, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##General forest: Pie chart of simple papillae on abaxial palea surface presence/absence
+```{r}
+#Group by simple papillae on abaxial palea surface only and obtain percentage present/absent
+guaduafloret_general_forest_palea_papillae_simple_per <- guaduafloret_general_forest %>% 
+  group_by(palea_papillae_simple) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guaduafloret_general_forest_palea_papillae_simple_per)
+
+#Create labeled pie chart of percentage of general forest specimens with simple papillae on palea abaxial surface
+ggplot(guaduafloret_general_forest_palea_papillae_simple_per, aes(x = "", y = perc, fill = palea_papillae_simple)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae absent or present on palea abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_palea_simple_papillae <- ggplot(guaduafloret_general_forest_palea_papillae_simple_per, aes(x = "", y = perc, fill = palea_papillae_simple)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae on palea abaxial surface")) +
+  ggtitle("Forest and Riparian") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_palea_simple_papillae.tiff", plot = forest_pie_palea_simple_papillae, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##General forest: Pie chart of bilobate horizontally elongated silica bodies on abaxial palea surface presence/absence
+```{r}
+#Group by bilobate horizontally elongated silica bodies on abaxial palea surface only and obtain percentage present/absent
+guaduafloret_general_forest_palea_bilobate_horizontal_per <- guaduafloret_general_forest %>% 
+  group_by(palea_bilobate_horizontal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guaduafloret_general_forest_palea_bilobate_horizontal_per)
+
+#Create labeled pie chart of percentage of general forest specimens with simple papillae on palea abaxial surface
+ggplot(guaduafloret_general_forest_palea_bilobate_horizontal_per, aes(x = "", y = perc, fill = palea_bilobate_horizontal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Bilobate horizontally elongated silica bodies
+              absent or present on palea abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_palea_bilobate_horizontal <- ggplot(guaduafloret_general_forest_palea_bilobate_horizontal_per, aes(x = "", y = perc, fill = palea_bilobate_horizontal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Bilobate horizontally elongated silica bodies
+  on palea abaxial surface")) +
+  ggtitle("Forest and Riparian") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_palea_bilobate_horizontal.tiff", plot = forest_pie_palea_bilobate_horizontal, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+
+## Pie charts - specimens from savanna species
+
+##Filtering dataframe for savanna species only
+```{r}
+#Filter dataframe of foliar micromorphology to include only forest and riparian species
+guaduafloret_savanna <- df_guaduafloret %>%
+  filter(general_habitat == "savanna")
+```
+
+##Savanna: Pie chart of simple papillae on abaxial lemma surface presence/absence
+```{r}
+#Group by simple papillae on abaxial lemma surface only and obtain percentage present/absent
+guaduafloret_savanna_lemma_papillae_simple_per <- guaduafloret_savanna %>% 
+  group_by(lemma_papillae_simple) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guaduafloret_savanna_lemma_papillae_simple_per)
+
+#Create labeled pie chart of percentage of savanna specimens with simple papillae on lemma abaxial surface
+ggplot(guaduafloret_savanna_lemma_papillae_simple_per, aes(x = "", y = perc, fill = lemma_papillae_simple)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae absent or present on lemma abaxial surface")) +
+  scale_fill_manual(labels = c("present", "absent"), values = c("#f7b54a", "#71caeb")) +
+  theme_void()
+
+
+savanna_lemma_simple_papillae <- ggplot(guaduafloret_savanna_lemma_papillae_simple_per, aes(x = "", y = perc, fill = lemma_papillae_simple)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae on lemma abaxial surface")) +
+  ggtitle("Savanna") +
+  scale_fill_manual(labels = c("present", "absent"), values = c("#f7b54a", "#71caeb")) +
+  theme_void()
+
+ggsave("savanna_pie_lemma_simple_papillae.tiff", plot = savanna_lemma_simple_papillae, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Savanna: Pie chart of simple papillae on abaxial palea surface presence/absence
+```{r}
+#Group by simple papillae on abaxial palea surface only and obtain percentage present/absent
+guaduafloret_savanna_palea_papillae_simple_per <- guaduafloret_savanna %>% 
+  group_by(palea_papillae_simple) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guaduafloret_savanna_palea_papillae_simple_per)
+
+#Create labeled pie chart of percentage of general forest specimens with simple papillae on palea abaxial surface
+ggplot(guaduafloret_savanna_palea_papillae_simple_per, aes(x = "", y = perc, fill = palea_papillae_simple)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae absent or present on palea abaxial surface")) +
+  scale_fill_manual(labels = c("present", "absent"), values = c("#f7b54a", "#71caeb")) +
+  theme_void()
+
+savanna_pie_palea_simple_papillae <- ggplot(guaduafloret_savanna_palea_papillae_simple_per, aes(x = "", y = perc, fill = palea_papillae_simple)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae on palea abaxial surface")) +
+  ggtitle("Savanna") +
+  scale_fill_manual(labels = c("present", "absent"), values = c("#f7b54a", "#71caeb")) +
+  theme_void()
+
+ggsave("savanna_pie_palea_simple_papillae.tiff", plot = savanna_pie_palea_simple_papillae, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Savanna: Pie chart of bilobate horizontally elongated silica bodies on abaxial palea surface presence/absence
+```{r}
+#Group by bilobate horizontally elongated silica bodies on abaxial palea surface only and obtain percentage present/absent
+guaduafloret_savanna_palea_bilobate_horizontal_per <- guaduafloret_savanna %>% 
+  group_by(palea_bilobate_horizontal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guaduafloret_savanna_palea_bilobate_horizontal_per)
+
+#Create labeled pie chart of percentage of savanna specimens with bilobate horizontally elongated silica bodies on palea abaxial surface
+ggplot(guaduafloret_savanna_palea_bilobate_horizontal_per, aes(x = "", y = perc, fill = palea_bilobate_horizontal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Bilobate horizontally elongated silica bodies
+              absent or present on palea abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+savanna_pie_palea_bilobate_horizontal <- ggplot(guaduafloret_savanna_palea_bilobate_horizontal_per, aes(x = "", y = perc, fill = palea_bilobate_horizontal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Bilobate horizontally elongated silica bodies
+  on palea abaxial surface")) +
+  ggtitle("Savanna") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("savanna_pie_palea_bilobate_horizontal.tiff", plot = savanna_pie_palea_bilobate_horizontal, width = 6, height = 4, units = "in", dpi = 600)
+```
