@@ -23,7 +23,7 @@ library(pander) #for model comparison
 ```{r}
 guadualeaf <- read_csv("../data/tidy/guadualeaf.csv", col_names = TRUE, na = "x")
 ```
-## Drop columns with NA and no variation and create dataframe with columns as factors
+## Drop columns with NA and no variation and create dataframe with columsn as factors
 ```{r}
 guadualeaf <- guadualeaf %>%
   select(-c(ad_stomata_freq, ad_papillae_overarch, ad_triangular_sub_cells,

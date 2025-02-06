@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-## Load appropriate libraries, installing if needed
+## load appropriate libraries, installing if needed
 ```{r}
 library(RRPP) #factorial manova uses this 
 library(geomorph) #factorial manova uses this
@@ -24,10 +24,10 @@ library(pander) #for model comparison
 ```{r}
 guaduafloret <- read_csv("../data/tidy/guaduafloret.csv", col_names = TRUE, na = "x")
 ```
-## Drop columns with NA and no variation and create dataframe with columns as factors
+## Drop columns with NA and no variation and create dataframe with columsn as factors
 ```{r}
 guaduafloret <- guaduafloret %>%
-  select(-c(lemma_stomata,lemma_stomata_freq, palea_sulcus_macro, palea_stomata_freq, palea_subsidiary_triangular, palea_subsidiary_dome, palea_subsidiary_parallel)) # remove columns with NA or no variation
+  select(-c(lemma_stomata, palea_sulcus_macro, palea_stomata_freq, palea_subsidiary_triangular, palea_subsidiary_dome, palea_subsidiary_parallel)) # remove columns with NA or no variation
 
 df_guaduafloret = data.frame(guaduafloret, stringsAsFactors = TRUE) # create dataframe
 
@@ -37,11 +37,17 @@ df_guaduafloret <- data.frame(lapply(df_guaduafloret,as.factor)) # set columns a
 
 ## Analysis
 
-### PCoA 
-The distance matrix for the binary data is obtained using simple matching coefficient. The PCoA from the distance matrix can be used to visualize the pairwise distances between the micromorphology of individual *Guadua* specimens.
+### Correlation
+The correlation is necessary to complete the PCoA. Additionally, viewing the correlation dataframe is useful for understanding which traits are correlated.
 ```{r}
 guadua_floret_y_binary <- df_guaduafloret[,10:ncol(df_guaduafloret)] # reads in the binary data only 
 guadua_floret_y_binary_df <- data.frame(lapply(guadua_floret_y_binary,function(x) as.numeric(levels(x))[x]))
+correlation_y_guadua_floret <- data.frame(cor(guadua_floret_y_binary_df)) #calculated the correlation of the Y values
+```
+
+### PCoA 
+The distance matrix for the binary data is obtained using simple matching coefficient. The PCoA from the distance matrix can be used to visualize the pairwise distances between the micromorphology of individual *Guadua* specimens.
+```{r}
 guadua_floret_y_dist <- dist.binary(guadua_floret_y_binary_df, method = 2, diag = FALSE, upper = FALSE) # convert to distances using simple matching coefficient
 guadua_floret_y_dist_matrix <- as.matrix(guadua_floret_y_dist) # create matrix using simple matching distances
 floret_PCoA <- cmdscale(guadua_floret_y_dist_matrix, eig = TRUE, x.ret = TRUE, list. = TRUE) #from vegan - run PcoA

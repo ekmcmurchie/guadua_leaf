@@ -1,0 +1,255 @@
+---
+title: "Guadua Floret Micromorphology Graphics"
+author: "Elizabeth McMurchie"
+date: "2022-09-10"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## load appropriate libraries, installing if needed
+```{r}
+library(tidyverse) #includes ggplot2 needed for graphics
+library(ade4) #needed for PcoA
+library(vegan) #needed for PCoA
+library(ggcorrplot) #for correlation tables
+```
+
+## Read in data as dataframe
+```{r}
+guaduafloret <- read_csv("../data/tidy/guaduafloret.csv", col_names = TRUE, na = "x")
+```
+
+## Drop columns with NA and no variation and create dataframe with columsn as factors
+```{r}
+guaduafloret <- guaduafloret %>%
+  select(-c(lemma_stomata, lemma_stomata_freq, palea_sulcus_macro, palea_stomata_freq, palea_subsidiary_triangular, palea_subsidiary_dome, palea_subsidiary_parallel)) # remove columns with NA or no variation
+
+df_guaduafloret = data.frame(guaduafloret, stringsAsFactors = TRUE) # create dataframe
+
+df_guaduafloret <- data.frame(lapply(df_guaduafloret,as.factor)) # set columns as factors
+
+```
+
+### Correlation
+The correlation is necessary to complete the PCoA. Additionally, viewing the correlation dataframe is useful for understanding which traits are correlated.
+```{r}
+guadua_floret_y_binary <- df_guaduafloret[,10:ncol(df_guaduafloret)] # reads in the binary data only 
+guadua_floret_y_binary_df <- data.frame(lapply(guadua_floret_y_binary,function(x) as.numeric(levels(x))[x]))
+correlation_y_guadua_floret <- data.frame(cor(guadua_floret_y_binary_df)) #calculated the correlation of the Y values
+
+view(correlation_y_guadua_floret) #viewing basic correlation table
+
+#ggcorrplot alows us to view correlation table with colors indicating correlation values
+
+ggcorrplot(correlation_y_guadua_floret, hc.order = TRUE, lab = TRUE)
+
+floretcorrs <- ggcorrplot(correlation_y_guadua_floret, hc.order = TRUE, lab = TRUE)
+
+ggsave("floretcorrplot.pdf", plot = floretcorrs, width = 20, height = 18, units = "in", dpi = 600)
+
+ggsave("floretcorrplot.jpg", plot = floretcorrs, width = 20, height = 18, units = "in", dpi = 600)
+
+ggsave("floretcorrplot.tiff", plot = floretcorrs, width = 20, height = 18, units = "in", dpi = 600)
+
+floretcorrs2 <- ggcorrplot(correlation_y_guadua_floret, hc.order = TRUE, lab = TRUE, type = "upper")
+
+ggsave("floretcorrplot2.pdf", plot = floretcorrs2, width = 20, height = 18, units = "in", dpi = 600)
+
+ggsave("floretcorrplot2.tiff", plot = floretcorrs2, width = 20, height = 18, units = "in", dpi = 600)
+
+ggsave("floretcorrplot2.jpg", plot = floretcorrs2, width = 20, height = 18, units = "in", dpi = 600)
+```
+
+### PCoA 
+The distance matrix for the binary data is obtained using simple matching coefficient. The PCoA from the distance matrix can be used to visualize the pairwise distances between the micromorphology of individual *Guadua* specimens.
+```{r}
+guadua_floret_y_dist <- dist.binary(guadua_floret_y_binary_df, method = 2, diag = FALSE, upper = FALSE) # convert to distances using simple matching coefficient
+guadua_floret_y_dist_matrix <- as.matrix(guadua_floret_y_dist) # create matrix using simple matching distances
+floret_PCoA <- cmdscale(guadua_floret_y_dist_matrix, eig = TRUE, x.ret = TRUE, list. = TRUE) #from vegan - run PcoA
+```
+
+# PCoA grouped by habit (3 categories)
+```{r}
+group.colors <- c("big_erect" = "#7b3294", "leaning_climbing" = "#1b7837",
+                  "small_arching" = "#f1a340") #to set colors
+
+nice_df <- floret_PCoA$points %>% 
+  data.frame
+nice_df$habit <- df_guaduafloret$habit
+habitatpcoa <- nice_df %>% 
+  ggplot(aes(X1, X2)) +
+  geom_point(aes(color = habit, shape = habit), size = 2) +
+  scale_color_manual(name = "Habit", breaks = c("big_erect", "leaning_climbing", "small_arching"),
+                     labels = c("Big erect", "Leaning/climbing", "Small arching"),
+                     values = group.colors) + 
+  scale_shape_manual(name = "Habit", breaks = c("big_erect", "leaning_climbing", "small_arching"),
+                     labels = c("Big erect", "Leaning/climbing", "Small arching"),
+                     values = c(15, 17, 19)) + 
+  theme_minimal() +
+  theme(
+    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  ) + 
+  labs(
+    color = "Habit", 
+    x = "Axis 1",
+    y = "Axis 2"
+  )
+
+ggsave("florethabits3.pdf", plot = habitatpcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("florethabits3.tiff", plot = habitatpcoa, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+# PCoA grouped by habit (2 categories)
+```{r}
+group.colors2 <- c("erect_or_climbing" = "#7b3294","small_arching" = "#f1a340")
+
+nice_df <- floret_PCoA$points %>% 
+  data.frame
+nice_df$general_habit <- df_guaduafloret$general_habit
+habits2pcoa <- nice_df %>% 
+  ggplot(aes(X1, X2)) +
+  geom_point(aes(color = general_habit, shape = general_habit), size = 2) +
+  scale_color_manual(name = "Habit", breaks = c("erect_or_climbing", "small_arching"),
+                     labels = c("Erect or climbing", "Small arching"),
+                     values = group.colors2) + 
+  scale_shape_manual(name = "Habit", breaks = c("erect_or_climbing", "small_arching"),
+                     labels = c("Erect or climbing", "Small arching"),
+                     values = c(15, 19)) + 
+  theme_minimal() +
+  theme(
+    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  ) + 
+  labs(
+    color = "Habit", 
+    x = "Axis 1",
+    y = "Axis 2"
+  )
+
+ggsave("florethabits2.pdf", plot = habits2pcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("florethabits2.tiff", plot = habits2pcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+```
+
+# PCoA grouped by habitat (3 categories)
+```{r}
+group.colors3 <- c("forest" = "#7b3294", "river" = "#1b7837",
+                   "savanna" = "#f1a340")
+
+nice_df <- floret_PCoA$points %>% 
+  data.frame
+nice_df$habitat <- df_guaduafloret$habitat
+habitatspcoa <- nice_df %>% 
+  ggplot(aes(X1, X2)) +
+  geom_point(aes(color = habitat, shape = habitat), size = 2) +
+  scale_color_manual(name = "Habitat", breaks = c("forest", "river", "savanna"),
+                     labels = c("Forest", "River", "Savanna"),
+                     values = group.colors3) + 
+  scale_shape_manual(name = "Habitat", breaks = c("forest", "river", "savanna"),
+                     labels = c("Forest", "River", "Savanna"),
+                     values = c(15, 17, 19)) +
+  theme_minimal() +
+  theme(
+    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  ) + 
+  labs(
+    color = "Habitat", 
+    x = "Axis 1",
+    y = "Axis 2"
+  )
+
+ggsave("florethabitat3.pdf", plot = habitatspcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("florethabitat3.tiff", plot = habitatspcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+```
+
+# PCoA grouped by habitat (2 categories)
+```{r}
+group.colors4 <- c("general_forest" = "#7b3294","savanna" = "#f1a340")
+
+nice_df <- floret_PCoA$points %>% 
+  data.frame
+nice_df$general_habitat <- df_guaduafloret$general_habitat
+habitats2pcoa <- nice_df %>% 
+  ggplot(aes(X1, X2)) +
+  geom_point(aes(color = general_habitat, shape = general_habitat), size = 2) +
+  scale_color_manual(name = "Habitat", breaks = c("general_forest", "savanna"),
+                     labels = c("Forest or River", "Savanna"),
+                     values = group.colors4) + 
+  scale_shape_manual(name = "Habitat", breaks = c("general_forest", "savanna"),
+                     labels = c("Forest or River", "Savanna"),
+                     values = c(15, 19)) + 
+  theme_minimal() +
+  theme(
+    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  ) + 
+  labs(
+    color = "Habitat", 
+    x = "Axis 1",
+    y = "Axis 2"
+  )
+
+
+ggsave("florethabitat2.pdf", plot = habitats2pcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("florethabitat2.tiff", plot = habitats2pcoa, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+# PCoA grouped by region
+```{r}
+group.colors5 <- c("andes" = "#7b3294", "central_america" = "#1b7837",
+                   "eastern_south_america" = "#af8dc3", "mexico" = "#f1a340")
+
+nice_df <- floret_PCoA$points %>% 
+  data.frame
+nice_df$region <- df_guaduafloret$region
+regionpcoa <- nice_df %>% 
+  ggplot(aes(X1, X2)) +
+  geom_point(aes(color = region, shape = region), size = 2) +
+  scale_color_manual(name = "Region", breaks = c("andes", "central_america",
+                                                 "eastern_south_america", "mexico"),
+                     labels = c("Andes", "Central America", "Eastern South America", "Mexico"),
+                     values = group.colors5) + 
+  scale_shape_manual(name = "Region", breaks = c("andes", "central_america",
+                                                 "eastern_south_america", "mexico"),
+                     labels = c("Andes", "Central America", "Eastern South America", "Mexico"),
+                     values = c(15, 17, 19, 18)) + 
+  theme_minimal() +
+  theme(
+    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  ) + 
+  labs(
+    color = "Region", 
+    x = "Axis 1",
+    y = "Axis 2"
+  )
+
+ggsave("floretregion.pdf", plot = regionpcoa, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+### Scree Plot From the PCoA 
+From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axes 1 and 2 are responsible for less than half of variation in the PCoA. Elbow is at approximately the eighth principal coordinate axis. Variation becomes negligible at approximately the 30th principal coordinate axis.
+```{r}
+eig_df <- data.frame( x_values = c(1:length(floret_PCoA$eig)) , eig_value = c(floret_PCoA$eig))
+scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +
+  geom_line() +
+  geom_point() + 
+  theme_minimal() +
+  theme(
+    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  ) + 
+  labs(
+    x = "Coordinate number",
+    y = "Eigenvalue"
+  )
+
+ggsave("floretscree.pdf", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("floretscree.tiff", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
+```
+

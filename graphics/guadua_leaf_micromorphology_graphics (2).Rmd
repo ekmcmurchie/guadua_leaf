@@ -1,0 +1,254 @@
+---
+title: "Guadua Leaf Micromorphology Graphics"
+author: "Elizabeth McMurchie"
+date: "2022-09-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## load appropriate libraries, installing if needed
+```{r}
+library(tidyverse) #includes ggplot2 needed for graphics
+library(ade4) #needed for PcoA
+library(vegan) #needed for PCoA
+library(ggcorrplot) #for correlation tables
+```
+
+## Read in data as dataframe
+```{r}
+guadualeaf <- read_csv("../data/tidy/guadualeaf.csv", col_names = TRUE, na = "x")
+```
+## Drop columns with NA and no variation and create dataframe with columns as factors
+```{r}
+guadualeaf <- guadualeaf %>%
+  select(-c(ad_stomata_freq, ad_papillae_overarch, ad_triangular_sub_cells,
+            ad_dome_sub_cells, ad_parallel_sub_cells, ab_ridged_saddle_intercostal,
+            ad_ridged_saddle_intercostal)) # remove columns with NA or no variation
+
+df_guadualeaf = data.frame(guadualeaf, stringsAsFactors = TRUE) # create dataframe
+
+df_guadualeaf <- data.frame(lapply(df_guadualeaf,as.factor)) # set columns as factors
+
+```
+
+### Correlation
+Viewing the correlation dataframe is useful for understanding which traits are correlated.
+```{r}
+guadua_y_binary <- df_guadualeaf[,9:ncol(df_guadualeaf)] # reads in the binary data only 
+guadua_y_binary_df <- data.frame(lapply(guadua_y_binary,function(x) as.numeric(levels(x))[x]))
+correlation_y_guadua <- data.frame(cor(guadua_y_binary_df)) #calculated the correlation of the Y values
+
+view(correlation_y_guadua) #viewing basic correlation table
+
+#ggcorrplot alows us to view correlation table with colors indicating correlation values
+
+ggcorrplot(correlation_y_guadua, hc.order = TRUE, lab = TRUE)
+
+corrs <- ggcorrplot(correlation_y_guadua, hc.order = TRUE, lab = TRUE)
+
+ggsave("leafcorrplot.pdf", plot = corrs, width = 26, height = 22, units = "in", dpi = 600)
+
+ggsave("leafcorrplot.jpg", plot = corrs, width = 26, height = 22, units = "in", dpi = 600)
+
+ggsave("leafcorrplot.tiff", plot = corrs, width = 26, height = 22, units = "in", dpi = 600)
+
+corrs2 <- ggcorrplot(correlation_y_guadua, hc.order = TRUE, lab = TRUE, type = "upper")
+
+ggsave("leafcorrplot2.pdf", plot = corrs2, width = 26, height = 22, units = "in", dpi = 600)
+
+ggsave("leafcorrplot2.jpg", plot = corrs2, width = 26, height = 22, units = "in", dpi = 600)
+```
+
+### PCoA 
+The distance matrix for the binary data is obtained using simple matching coefficient. The PCoA from the distance matrix can be used to visualize the pairwise distances between the micromorphology of individual *Guadua* specimens.
+```{r}
+guadua_y_dist <- dist.binary(guadua_y_binary_df, method = 2, diag = FALSE, upper = FALSE) # convert to distances using simple matching coefficient
+guadua_y_dist_matrix <- as.matrix(guadua_y_dist) # create matrix using simple matching distances
+PCoA <- cmdscale(guadua_y_dist_matrix, eig = TRUE, x.ret = TRUE, list. = TRUE) #from vegan - run PcoA
+```
+
+# PCoA grouped by habit (3 categories)
+```{r}
+group.colors <- c("big_erect" = "#7b3294", "leaning_climbing" = "#1b7837",
+                  "small_arching" = "#f1a340") #to set colors
+
+nice_df <- PCoA$points %>% 
+  data.frame
+nice_df$habit <- df_guadualeaf$habit
+habitatpcoa <- nice_df %>% 
+  ggplot(aes(X1, X2)) +
+  geom_point(aes(color = habit, shape = habit), size = 2) +
+  scale_color_manual(name = "Habit", breaks = c("big_erect", "leaning_climbing", "small_arching"),
+                     labels = c("Big erect", "Leaning/climbing", "Small arching"),
+                     values = group.colors) + 
+  scale_shape_manual(name = "Habit", breaks = c("big_erect", "leaning_climbing", "small_arching"),
+                     labels = c("Big erect", "Leaning/climbing", "Small arching"),
+                     values = c(15, 17, 19)) + 
+  theme_minimal() +
+  theme(
+    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  ) + 
+  labs(
+    color = "Habit", 
+    x = "Axis 1",
+    y = "Axis 2"
+  )
+
+ggsave("leafhabits3.pdf", plot = habitatpcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("leafhabits3.tiff", plot = habitatpcoa, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+# PCoA grouped by habit ( categories)
+```{r}
+group.colors2 <- c("erect_or_climbing" = "#7b3294","small_arching" = "#f1a340")
+
+nice_df <- PCoA$points %>% 
+  data.frame
+nice_df$general_habit <- df_guadualeaf$general_habit
+habits2pcoa <- nice_df %>% 
+  ggplot(aes(X1, X2)) +
+  geom_point(aes(color = general_habit, shape = general_habit), size = 2) +
+  scale_color_manual(name = "Habit", breaks = c("erect_or_climbing", "small_arching"),
+                     labels = c("Erect or climbing", "Small arching"),
+                     values = group.colors2) + 
+  scale_shape_manual(name = "Habit", breaks = c("erect_or_climbing", "small_arching"),
+                     labels = c("Erect or climbing", "Small arching"),
+                     values = c(15, 19)) + 
+  theme_minimal() +
+  theme(
+    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  ) + 
+  labs(
+    color = "Habit", 
+    x = "Axis 1",
+    y = "Axis 2"
+  )
+
+ggsave("leafhabits2.pdf", plot = habits2pcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("leafhabits2.tiff", plot = habits2pcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+```
+
+# PCoA grouped by habitat (3 categories)
+```{r}
+group.colors3 <- c("forest" = "#7b3294", "river" = "#1b7837",
+                   "savanna" = "#f1a340")
+
+nice_df <- PCoA$points %>% 
+  data.frame
+nice_df$habitat <- df_guadualeaf$habitat
+habitatspcoa <- nice_df %>% 
+  ggplot(aes(X1, X2)) +
+  geom_point(aes(color = habitat, shape = habitat), size = 2) +
+  scale_color_manual(name = "Habitat", breaks = c("forest", "river", "savanna"),
+                     labels = c("Forest", "River", "Savanna"),
+                     values = group.colors3) + 
+  scale_shape_manual(name = "Habitat", breaks = c("forest", "river", "savanna"),
+                     labels = c("Forest", "River", "Savanna"),
+                     values = c(15, 17, 19)) +
+  theme_minimal() +
+  theme(
+    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  ) + 
+  labs(
+    color = "Habitat", 
+    x = "Axis 1",
+    y = "Axis 2"
+  )
+
+ggsave("leafhabitat3.pdf", plot = habitatspcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("leafhabitat3.tiff", plot = habitatspcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+```
+
+# PCoA grouped by habitat (2 categories)
+```{r}
+group.colors4 <- c("general_forest" = "#7b3294","savanna" = "#f1a340")
+
+nice_df <- PCoA$points %>% 
+  data.frame
+nice_df$general_habitat <- df_guadualeaf$general_habitat
+habitats2pcoa <- nice_df %>% 
+  ggplot(aes(X1, X2)) +
+  geom_point(aes(color = general_habitat, shape = general_habitat), size = 2) +
+  scale_color_manual(name = "Habitat", breaks = c("general_forest", "savanna"),
+                     labels = c("Forest or River", "Savanna"),
+                     values = group.colors4) + 
+  scale_shape_manual(name = "Habitat", breaks = c("general_forest", "savanna"),
+                     labels = c("Forest or River", "Savanna"),
+                     values = c(15, 19)) + 
+  theme_minimal() +
+  theme(
+    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  ) + 
+  labs(
+    color = "Habitat", 
+    x = "Axis 1",
+    y = "Axis 2"
+  )
+
+
+ggsave("leafhabitat2.pdf", plot = habitats2pcoa, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("leafhabitat2.tiff", plot = habitats2pcoa, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+# PCoA grouped by region
+```{r}
+group.colors5 <- c("andes" = "#7b3294", "central_america" = "#1b7837",
+                   "eastern_south_america" = "#af8dc3", "mexico" = "#f1a340")
+
+nice_df <- PCoA$points %>% 
+  data.frame
+nice_df$region <- df_guadualeaf$region
+regionpcoa <- nice_df %>% 
+  ggplot(aes(X1, X2)) +
+  geom_point(aes(color = region, shape = region), size = 2) +
+  scale_color_manual(name = "Region", breaks = c("andes", "central_america",
+                                                 "eastern_south_america", "mexico"),
+                     labels = c("Andes", "Central America", "Eastern South America", "Mexico"),
+                     values = group.colors5) + 
+  scale_shape_manual(name = "Region", breaks = c("andes", "central_america",
+                                                 "eastern_south_america", "mexico"),
+                     labels = c("Andes", "Central America", "Eastern South America", "Mexico"),
+                     values = c(15, 17, 19, 18)) + 
+  theme_minimal() +
+  theme(
+    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  ) + 
+  labs(
+    color = "Region", 
+    x = "Axis 1",
+    y = "Axis 2"
+  )
+
+ggsave("leafregion.pdf", plot = regionpcoa, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+### Scree Plot From the PCoA 
+From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axis 1 is responsible for the majority of variation in the PCoA, followed by a steep drop in variation. By the 25th axis, variation is minimal and by the 50th, arguably negligible. Elbow is at approximately the sixth principal coordinate axis.
+```{r}
+eig_df <- data.frame( x_values = c(1:length(PCoA$eig)) , eig_value = c(PCoA$eig))
+scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +
+  geom_line() +
+  geom_point() + 
+  theme_minimal() +
+  theme(
+    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  ) + 
+  labs(
+    x = "Coordinate number",
+    y = "Eigenvalue"
+  )
+
+ggsave("leafscree.pdf", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
+
+ggsave("leafscree.tiff", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
+```
+

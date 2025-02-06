@@ -20,7 +20,7 @@ library(readr) #part of core tidyverse
 
 ## Read in data: 
 ```{r}
-foliageleaf <- read_excel("../data/raw/guadua_leaf_raw.xlsx")
+foliageleaf <- read_excel("../data/raw/guadua_leaf_raw_3.xlsx")
 ```
 
 
@@ -44,10 +44,10 @@ colnames(foliageleaf)
 str(foliageleaf)
 foliageleaf <- foliageleaf %>%
   mutate(across(c(specimen, country, region, species, habit, habitat, general_habitat,
-                  ab_simple_papillae_long_cells_stomatal, ab_simple_papillae_long_cells_interstomatal,
-                  ab_bifurcated_papillae_long_cells_stomatal,
-                  ab_bifurcated_papillae_long_cells_interstomatal,
-                  ab_branch_papillae_long_cells_stomatal, ab_branch_papillae_long_cells_interstomatal,
+                  ab_simple_papillae_long_cells_stomatal,
+                  ab_simple_papillae_long_cells_interstomatal,ab_bifurcated_papillae_long_cells_stomatal, 
+                  ab_bifurcated_papillae_long_cells_interstomatal,ab_branch_papillae_long_cells_stomatal,
+                  ab_branch_papillae_long_cells_interstomatal,
                   ab_prickle, ab_bimicro,	ab_macro, ab_bilobate_intercostal,
                   ab_ridged_saddle_intercostal, ab_smooth_saddle_intercostal,
                   ab_vertically_elongated_rounded_intercostal, ab_reniform_intercostal,
@@ -57,8 +57,8 @@ foliageleaf <- foliageleaf %>%
                   ab_triangular_sub_cells, ab_dome_sub_cells,	ab_parallel_sub_cells,
                   ad_stomata,	ad_stomata_freq, ad_simple_papillae_long_cells_stomatal,
                   ad_simple_papillae_long_cells_interstomatal, ad_bifurcated_papillae_long_cells_stomatal,
-                  ad_bifurcated_papillae_long_cells_interstomatal,
-                  ad_branch_papillae_long_cells_stomatal, ad_branch_papillae_long_cells_interstomatal,
+                  ad_bifurcated_papillae_long_cells_interstomatal, ad_branch_papillae_long_cells_stomatal,
+                  ad_branch_papillae_long_cells_interstomatal,
                   ad_papillae_overarch, ad_papillae_bulliform, 
                   ad_prickle, ad_bimicro, ad_macro,
                   ad_bilobate_intercostal, ad_ridged_saddle_intercostal,
