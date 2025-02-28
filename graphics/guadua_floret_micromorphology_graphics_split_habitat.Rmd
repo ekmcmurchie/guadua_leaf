@@ -361,20 +361,19 @@ ggsave("floretscree.pdf", plot = scree, width = 6, height = 4, units = "in", dpi
 ggsave("floretscree.tiff", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
+## Pie charts - specimens from river species
 
-## Pie charts - specimens from forest and riparian species
-
-##Filtering dataframe for forest and riparian species only
+##Filtering dataframe for river species only
 ```{r}
-#Filter dataframe of foliar micromorphology to include only forest and riparian species
-guaduafloret_general_forest <- df_guaduafloret %>%
-  filter(general_habitat == "general_forest")
+#Filter dataframe of foliar micromorphology to include only river species
+guaduafloret_river <- df_guaduafloret %>%
+  filter(habitat == "river")
 ```
 
-##General forest: Pie chart of simple papillae on abaxial lemma surface presence/absence
+##River: Pie chart of simple papillae on abaxial lemma surface presence/absence
 ```{r}
 #Group by simple papillae on abaxial lemma surface only and obtain percentage present/absent
-guaduafloret_general_forest_lemma_papillae_simple_per <- guaduafloret_general_forest %>% 
+guaduafloret_river_lemma_papillae_simple_per <- guaduafloret_river %>% 
   group_by(lemma_papillae_simple) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -382,10 +381,10 @@ guaduafloret_general_forest_lemma_papillae_simple_per <- guaduafloret_general_fo
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guaduafloret_general_forest_lemma_papillae_simple_per)
+#view(guaduafloret_river_lemma_papillae_simple_per)
 
-#Create labeled pie chart of percentage of general forest specimens with simple papillae on lemma abaxial surface
-ggplot(guaduafloret_general_forest_lemma_papillae_simple_per, aes(x = "", y = perc, fill = lemma_papillae_simple)) +
+#Create labeled pie chart of percentage of river specimens with simple papillae on lemma abaxial surface
+ggplot(guaduafloret_river_lemma_papillae_simple_per, aes(x = "", y = perc, fill = lemma_papillae_simple)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -396,21 +395,21 @@ ggplot(guaduafloret_general_forest_lemma_papillae_simple_per, aes(x = "", y = pe
   theme_void()
 
 
-forest_pie_lemma_simple_papillae <- ggplot(guaduafloret_general_forest_lemma_papillae_simple_per, aes(x = "", y = perc, fill = lemma_papillae_simple)) +
+river_pie_lemma_simple_papillae <- ggplot(guaduafloret_river_lemma_papillae_simple_per, aes(x = "", y = perc, fill = lemma_papillae_simple)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Simple papillae on lemma abaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_lemma_simple_papillae.tiff", plot = forest_pie_lemma_simple_papillae, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_lemma_simple_papillae.tiff", plot = river_pie_lemma_simple_papillae, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
-##General forest: Pie chart of simple papillae on abaxial palea surface presence/absence
+##River: Pie chart of simple papillae on abaxial palea surface presence/absence
 ```{r}
 #Group by simple papillae on abaxial palea surface only and obtain percentage present/absent
-guaduafloret_general_forest_palea_papillae_simple_per <- guaduafloret_general_forest %>% 
+guaduafloret_river_palea_papillae_simple_per <- guaduafloret_river %>% 
   group_by(palea_papillae_simple) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -418,10 +417,10 @@ guaduafloret_general_forest_palea_papillae_simple_per <- guaduafloret_general_fo
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guaduafloret_general_forest_palea_papillae_simple_per)
+#view(guaduafloret_river_palea_papillae_simple_per)
 
-#Create labeled pie chart of percentage of general forest specimens with simple papillae on palea abaxial surface
-ggplot(guaduafloret_general_forest_palea_papillae_simple_per, aes(x = "", y = perc, fill = palea_papillae_simple)) +
+#Create labeled pie chart of percentage of river specimens with simple papillae on palea abaxial surface
+ggplot(guaduafloret_river_palea_papillae_simple_per, aes(x = "", y = perc, fill = palea_papillae_simple)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -432,21 +431,21 @@ ggplot(guaduafloret_general_forest_palea_papillae_simple_per, aes(x = "", y = pe
   theme_void()
 
 
-forest_pie_palea_simple_papillae <- ggplot(guaduafloret_general_forest_palea_papillae_simple_per, aes(x = "", y = perc, fill = palea_papillae_simple)) +
+river_pie_palea_simple_papillae <- ggplot(guaduafloret_river_palea_papillae_simple_per, aes(x = "", y = perc, fill = palea_papillae_simple)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Simple papillae on palea abaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_palea_simple_papillae.tiff", plot = forest_pie_palea_simple_papillae, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_palea_simple_papillae.tiff", plot = river_pie_palea_simple_papillae, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
-##General forest: Pie chart of bilobate horizontally elongated silica bodies on abaxial palea surface presence/absence
+##River: Pie chart of bilobate horizontally elongated silica bodies on abaxial palea surface presence/absence
 ```{r}
 #Group by bilobate horizontally elongated silica bodies on abaxial palea surface only and obtain percentage present/absent
-guaduafloret_general_forest_palea_bilobate_horizontal_per <- guaduafloret_general_forest %>% 
+guaduafloret_river_palea_bilobate_horizontal_per <- guaduafloret_river %>% 
   group_by(palea_bilobate_horizontal) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -454,10 +453,10 @@ guaduafloret_general_forest_palea_bilobate_horizontal_per <- guaduafloret_genera
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guaduafloret_general_forest_palea_bilobate_horizontal_per)
+#view(guaduafloret_river_palea_bilobate_horizontal_per)
 
-#Create labeled pie chart of percentage of general forest specimens with simple papillae on palea abaxial surface
-ggplot(guaduafloret_general_forest_palea_bilobate_horizontal_per, aes(x = "", y = perc, fill = palea_bilobate_horizontal)) +
+#Create labeled pie chart of percentage of river specimens with simple papillae on palea abaxial surface
+ggplot(guaduafloret_river_palea_bilobate_horizontal_per, aes(x = "", y = perc, fill = palea_bilobate_horizontal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -469,12 +468,132 @@ ggplot(guaduafloret_general_forest_palea_bilobate_horizontal_per, aes(x = "", y 
   theme_void()
 
 
-forest_pie_palea_bilobate_horizontal <- ggplot(guaduafloret_general_forest_palea_bilobate_horizontal_per, aes(x = "", y = perc, fill = palea_bilobate_horizontal)) +
+river_pie_palea_bilobate_horizontal <- ggplot(guaduafloret_river_palea_bilobate_horizontal_per, aes(x = "", y = perc, fill = palea_bilobate_horizontal)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Bilobate horizontally elongated silica bodies
   on palea abaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("river_pie_palea_bilobate_horizontal.tiff", plot = river_pie_palea_bilobate_horizontal, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+
+## Pie charts - specimens from forest species
+
+##Filtering dataframe for forest species only
+```{r}
+#Filter dataframe of foliar micromorphology to include only forest species
+guaduafloret_forest <- df_guaduafloret %>%
+  filter(habitat == "forest")
+```
+
+##Forest: Pie chart of simple papillae on abaxial lemma surface presence/absence
+```{r}
+#Group by simple papillae on abaxial lemma surface only and obtain percentage present/absent
+guaduafloret_forest_lemma_papillae_simple_per <- guaduafloret_forest %>% 
+  group_by(lemma_papillae_simple) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guaduafloret_forest_lemma_papillae_simple_per)
+
+#Create labeled pie chart of percentage of forest specimens with simple papillae on lemma abaxial surface
+ggplot(guaduafloret_forest_lemma_papillae_simple_per, aes(x = "", y = perc, fill = lemma_papillae_simple)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae absent or present on lemma abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_lemma_simple_papillae <- ggplot(guaduafloret_forest_lemma_papillae_simple_per, aes(x = "", y = perc, fill = lemma_papillae_simple)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae on lemma abaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_lemma_simple_papillae.tiff", plot = forest_pie_lemma_simple_papillae, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Forest: Pie chart of simple papillae on abaxial palea surface presence/absence
+```{r}
+#Group by simple papillae on abaxial palea surface only and obtain percentage present/absent
+guaduafloret_forest_palea_papillae_simple_per <- guaduafloret_forest %>% 
+  group_by(palea_papillae_simple) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guaduafloret_forest_palea_papillae_simple_per)
+
+#Create labeled pie chart of percentage of forest specimens with simple papillae on palea abaxial surface
+ggplot(guaduafloret_forest_palea_papillae_simple_per, aes(x = "", y = perc, fill = palea_papillae_simple)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae absent or present on palea abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_palea_simple_papillae <- ggplot(guaduafloret_forest_palea_papillae_simple_per, aes(x = "", y = perc, fill = palea_papillae_simple)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae on palea abaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_palea_simple_papillae.tiff", plot = forest_pie_palea_simple_papillae, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Forest: Pie chart of bilobate horizontally elongated silica bodies on abaxial palea surface presence/absence
+```{r}
+#Group by bilobate horizontally elongated silica bodies on abaxial palea surface only and obtain percentage present/absent
+guaduafloret_forest_palea_bilobate_horizontal_per <- guaduafloret_forest %>% 
+  group_by(palea_bilobate_horizontal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guaduafloret_forest_palea_bilobate_horizontal_per)
+
+#Create labeled pie chart of percentage of forest specimens with simple papillae on palea abaxial surface
+ggplot(guaduafloret_forest_palea_bilobate_horizontal_per, aes(x = "", y = perc, fill = palea_bilobate_horizontal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Bilobate horizontally elongated silica bodies
+              absent or present on palea abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_palea_bilobate_horizontal <- ggplot(guaduafloret_forest_palea_bilobate_horizontal_per, aes(x = "", y = perc, fill = palea_bilobate_horizontal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Bilobate horizontally elongated silica bodies
+  on palea abaxial surface")) +
+  ggtitle("Forest") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 

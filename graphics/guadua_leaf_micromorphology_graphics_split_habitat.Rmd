@@ -347,19 +347,19 @@ ggsave("leafscree.pdf", plot = scree, width = 6, height = 4, units = "in", dpi =
 ggsave("leafscree.tiff", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
-## Pie charts - specimens from forest and riparian species
+## Pie charts - specimens from river species
 
-##Filtering dataframe for forest and riparian species only
+##Filtering dataframe for river species only
 ```{r}
-#Filter dataframe of foliar micromorphology to include only forest and riparian species
-guadualeaf_general_forest <- df_guadualeaf %>%
-  filter(general_habitat == "general_forest")
+#Filter dataframe of foliar micromorphology to include only river species
+guadualeaf_river <- df_guadualeaf %>%
+  filter(habitat == "river")
 ```
 
-##General forest: Pie chart of simple papillae on long cells of stomatal regions on abaxial leaf surface presence/absence
+##River: Pie chart of simple papillae on long cells of stomatal regions on abaxial leaf surface presence/absence
 ```{r}
 #Group by simple papillae on long cells of stomatal regions on abaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_per_ab_pap_sto <- guadualeaf_general_forest %>% 
+guadualeaf_river_per_ab_pap_sto <- guadualeaf_river %>% 
   group_by(ab_simple_papillae_long_cells_stomatal) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -367,10 +367,10 @@ guadualeaf_general_forest_per_ab_pap_sto <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_per_ab_pap_sto)
+#view(guadualeaf_river_per_ab_pap_sto)
 
-#Create labeled pie chart of percentage of general forest specimens with papillae on long cells of stomatal regions on abaxial surface
-ggplot(guadualeaf_general_forest_per_ab_pap_sto, aes(x = "", y = perc, fill = ab_simple_papillae_long_cells_stomatal)) +
+#Create labeled pie chart of percentage of river specimens with papillae on long cells of stomatal regions on abaxial surface
+ggplot(guadualeaf_river_per_ab_pap_sto, aes(x = "", y = perc, fill = ab_simple_papillae_long_cells_stomatal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -378,28 +378,27 @@ ggplot(guadualeaf_general_forest_per_ab_pap_sto, aes(x = "", y = perc, fill = ab
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Simple papillae on long cells
 of stomatal region")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
 
-forest_pie_abaxial_simple_papillae_stomatal <- ggplot(guadualeaf_general_forest_per_ab_pap_sto, aes(x = "", y = perc, fill = ab_simple_papillae_long_cells_stomatal)) +
+river_pie_abaxial_simple_papillae_stomatal <- ggplot(guadualeaf_river_per_ab_pap_sto, aes(x = "", y = perc, fill = ab_simple_papillae_long_cells_stomatal)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Simple papillae on long cells
 of stomatal region of abaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_abaxial_simple_papillae_stomatal.tiff", plot = forest_pie_abaxial_simple_papillae_stomatal, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_abaxial_simple_papillae_stomatal.tiff", plot = river_pie_abaxial_simple_papillae_stomatal, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
-
-##General forest: Pie chart of simple papillae on long cells of interstomatal regions of abaxial leaf surface presence/absence
+##River: Pie chart of simple papillae on long cells of interstomatal regions of abaxial leaf surface presence/absence
 ```{r}
 #Group by branched papillae on long cells of interstomatal regions on abaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_per_ab_pap_int <- guadualeaf_general_forest %>% 
+guadualeaf_river_per_ab_pap_int <- guadualeaf_river %>% 
   group_by(ab_branch_papillae_long_cells_interstomatal) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -407,10 +406,10 @@ guadualeaf_general_forest_per_ab_pap_int <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_per_ab_pap)
+#view(guadualeaf_river_per_ab_pap)
 
-#Create labeled pie chart of percentage of general forest specimens with branched papillae on long cells of interstomatal regions on abaxial surface
-ggplot(guadualeaf_general_forest_per_ab_pap_int, aes(x = "", y = perc, fill = ab_branch_papillae_long_cells_interstomatal)) +
+#Create labeled pie chart of percentage of river specimens with branched papillae on long cells of interstomatal regions on abaxial surface
+ggplot(guadualeaf_river_per_ab_pap_int, aes(x = "", y = perc, fill = ab_branch_papillae_long_cells_interstomatal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -422,23 +421,22 @@ ggplot(guadualeaf_general_forest_per_ab_pap_int, aes(x = "", y = perc, fill = ab
   theme_void()
 
 
-forest_pie_abaxial_branched_papillae_interstomatal <- ggplot(guadualeaf_general_forest_per_ab_pap_int, aes(x = "", y = perc, fill = ab_branch_papillae_long_cells_interstomatal)) +
+river_pie_abaxial_branched_papillae_interstomatal <- ggplot(guadualeaf_river_per_ab_pap_int, aes(x = "", y = perc, fill = ab_branch_papillae_long_cells_interstomatal)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Branched papillae on long cells
   of interstomatal region of abaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_abaxial_branched_papillae_interstomatal.tiff", plot = forest_pie_abaxial_branched_papillae_interstomatal, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_abaxial_branched_papillae_interstomatal.tiff", plot = river_pie_abaxial_branched_papillae_interstomatal, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
-
-##General forest: Pie chart of macrohairs on abaxial leaf surface presence/absence
+##River: Pie chart of macrohairs on abaxial leaf surface presence/absence
 ```{r}
 #Group by macrohairs on abaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_per_ab_macro <- guadualeaf_general_forest %>% 
+guadualeaf_river_per_ab_macro <- guadualeaf_river %>% 
   group_by(ab_macro) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -446,10 +444,10 @@ guadualeaf_general_forest_per_ab_macro <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_per_ab_macro)
+#view(guadualeaf_river_per_ab_macro)
 
-#Create labeled pie chart of percentage of general forest specimens with papillae on long cells of interstomatal zones on abaxial surface
-ggplot(guadualeaf_general_forest_per_ab_macro, aes(x = "", y = perc, fill = ab_macro)) +
+#Create labeled pie chart of percentage of river specimens with papillae on long cells of interstomatal zones on abaxial surface
+ggplot(guadualeaf_river_per_ab_macro, aes(x = "", y = perc, fill = ab_macro)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -461,21 +459,21 @@ ggplot(guadualeaf_general_forest_per_ab_macro, aes(x = "", y = perc, fill = ab_m
   theme_void()
 
 
-forest_pie_abaxial_macrohair <- ggplot(guadualeaf_general_forest_per_ab_macro, aes(x = "", y = perc, fill = ab_macro)) +
+river_pie_abaxial_macrohair <- ggplot(guadualeaf_river_per_ab_macro, aes(x = "", y = perc, fill = ab_macro)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Macrohairs on abaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_abaxial_macrohair.tiff", plot = forest_pie_abaxial_macrohair, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_abaxial_macrohair.tiff", plot = river_pie_abaxial_macrohair, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
-##General forest: Pie chart of smooth saddle-shaped silica bodies in intercostal zones on abaxial leaf surface presence/absence
+##River: Pie chart of smooth saddle-shaped silica bodies in intercostal zones on abaxial leaf surface presence/absence
 ```{r}
 #Group by smooth saddle-shaped silica bodes in intercostal zones on abaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_smooth_saddle_int_ab <- guadualeaf_general_forest %>% 
+guadualeaf_river_smooth_saddle_int_ab <- guadualeaf_river %>% 
   group_by(ab_smooth_saddle_intercostal) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -483,10 +481,10 @@ guadualeaf_general_forest_smooth_saddle_int_ab <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_smooth_saddle_int_ab)
+#view(guadualeaf_river_smooth_saddle_int_ab)
 
-#Create labeled pie chart of percentage of general forest specimens with smooth saddle-shaped silica bodies on long cells of intercostal zones on abaxial surface
-ggplot(guadualeaf_general_forest_smooth_saddle_int_ab, aes(x = "", y = perc, fill = ab_smooth_saddle_intercostal)) +
+#Create labeled pie chart of percentage of river specimens with smooth saddle-shaped silica bodies on long cells of intercostal zones on abaxial surface
+ggplot(guadualeaf_river_smooth_saddle_int_ab, aes(x = "", y = perc, fill = ab_smooth_saddle_intercostal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -498,22 +496,22 @@ ggplot(guadualeaf_general_forest_smooth_saddle_int_ab, aes(x = "", y = perc, fil
   theme_void()
 
 
-forest_pie_abaxial_smooth_saddle_int <- ggplot(guadualeaf_general_forest_smooth_saddle_int_ab, aes(x = "", y = perc, fill = ab_smooth_saddle_intercostal)) +
+river_pie_abaxial_smooth_saddle_int <- ggplot(guadualeaf_river_smooth_saddle_int_ab, aes(x = "", y = perc, fill = ab_smooth_saddle_intercostal)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Smooth saddle-shaped silica bodies in
   intercostal zone of abaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_abaxial_smooth_saddle_int.tiff", plot = forest_pie_abaxial_smooth_saddle_int, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_abaxial_smooth_saddle_int.tiff", plot = river_pie_abaxial_smooth_saddle_int, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
-##General forest: Pie chart of nodular silica bodies in intercostal zones on abaxial leaf surface presence/absence
+##River: Pie chart of nodular silica bodies in intercostal zones on abaxial leaf surface presence/absence
 ```{r}
 #Group by nodular silica bodes in intercostal zones on abaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_nodular_int_ab <- guadualeaf_general_forest %>% 
+guadualeaf_river_nodular_int_ab <- guadualeaf_river %>% 
   group_by(ab_nodular_intercostal) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -521,10 +519,10 @@ guadualeaf_general_forest_nodular_int_ab <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_nodular_int_ab)
+#view(guadualeaf_river_nodular_int_ab)
 
-#Create labeled pie chart of percentage of general forest specimens with nodular silica bodies on long cells of intercostal zones on abaxial surface
-ggplot(guadualeaf_general_forest_nodular_int_ab, aes(x = "", y = perc, fill = ab_nodular_intercostal)) +
+#Create labeled pie chart of percentage of river specimens with nodular silica bodies on long cells of intercostal zones on abaxial surface
+ggplot(guadualeaf_river_nodular_int_ab, aes(x = "", y = perc, fill = ab_nodular_intercostal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -536,22 +534,22 @@ ggplot(guadualeaf_general_forest_nodular_int_ab, aes(x = "", y = perc, fill = ab
   theme_void()
 
 
-forest_pie_abaxial_nodular_int <- ggplot(guadualeaf_general_forest_nodular_int_ab, aes(x = "", y = perc, fill = ab_nodular_intercostal)) +
+river_pie_abaxial_nodular_int <- ggplot(guadualeaf_river_nodular_int_ab, aes(x = "", y = perc, fill = ab_nodular_intercostal)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Nodular silica bodies in
   intercostal zone of abaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_abaxial_nodular_int.tiff", plot = forest_pie_abaxial_nodular_int, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_abaxial_nodular_int.tiff", plot = river_pie_abaxial_nodular_int, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
-##General forest: Pie chart of bilobate silica bodies in costal zones on abaxial leaf surface presence/absence
+##River: Pie chart of bilobate silica bodies in costal zones on abaxial leaf surface presence/absence
 ```{r}
 #Group by bilobate silica bodes in intercostal zones on abaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_bilobate_cost_ab <- guadualeaf_general_forest %>% 
+guadualeaf_river_bilobate_cost_ab <- guadualeaf_river %>% 
   group_by(ab_bilobate_costal) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -559,10 +557,10 @@ guadualeaf_general_forest_bilobate_cost_ab <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_bilobate_cost_ab)
+#view(guadualeaf_river_bilobate_cost_ab)
 
-#Create labeled pie chart of percentage of general forest specimens with bilobate silica bodies on long cells of costal zones on abaxial surface
-ggplot(guadualeaf_general_forest_bilobate_cost_ab, aes(x = "", y = perc, fill = ab_bilobate_costal)) +
+#Create labeled pie chart of percentage of river specimens with bilobate silica bodies on long cells of costal zones on abaxial surface
+ggplot(guadualeaf_river_bilobate_cost_ab, aes(x = "", y = perc, fill = ab_bilobate_costal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -573,22 +571,22 @@ ggplot(guadualeaf_general_forest_bilobate_cost_ab, aes(x = "", y = perc, fill = 
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-forest_pie_abaxial_bilobate_cost <- ggplot(guadualeaf_general_forest_bilobate_cost_ab, aes(x = "", y = perc, fill = ab_bilobate_costal)) +
+river_pie_abaxial_bilobate_cost <- ggplot(guadualeaf_river_bilobate_cost_ab, aes(x = "", y = perc, fill = ab_bilobate_costal)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Bilobate silica bodies in
   costal zone of abaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_abaxial_bilobate_cost.tiff", plot = forest_pie_abaxial_bilobate_cost, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_abaxial_bilobate_cost.tiff", plot = river_pie_abaxial_bilobate_cost, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
-##General forest: Pie chart of ridged saddle-shaped silica bodies in costal zones on abaxial leaf surface presence/absence
+##River: Pie chart of ridged saddle-shaped silica bodies in costal zones on abaxial leaf surface presence/absence
 ```{r}
 #Group by ridged saddle-shaped silica bodes in intercostal zones on abaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_ridged_saddle_cost_ab <- guadualeaf_general_forest %>% 
+guadualeaf_river_ridged_saddle_cost_ab <- guadualeaf_river %>% 
   group_by(ab_ridged_saddle_costal) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -596,10 +594,10 @@ guadualeaf_general_forest_ridged_saddle_cost_ab <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_ridged_saddle_cost_ab)
+#view(guadualeaf_river_ridged_saddle_cost_ab)
 
-#Create labeled pie chart of percentage of general forest specimens with ridged saddle-shaped silica bodies on long cells of intercostal zones on abaxial surface
-ggplot(guadualeaf_general_forest_ridged_saddle_cost_ab, aes(x = "", y = perc, fill = ab_ridged_saddle_costal)) +
+#Create labeled pie chart of percentage of river specimens with ridged saddle-shaped silica bodies on long cells of intercostal zones on abaxial surface
+ggplot(guadualeaf_river_ridged_saddle_cost_ab, aes(x = "", y = perc, fill = ab_ridged_saddle_costal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -611,21 +609,22 @@ ggplot(guadualeaf_general_forest_ridged_saddle_cost_ab, aes(x = "", y = perc, fi
   theme_void()
 
 
-forest_pie_abaxial_ridged_saddle_cost <- ggplot(guadualeaf_general_forest_ridged_saddle_cost_ab, aes(x = "", y = perc, fill = ab_ridged_saddle_costal)) +
+river_pie_abaxial_ridged_saddle_cost <- ggplot(guadualeaf_river_ridged_saddle_cost_ab, aes(x = "", y = perc, fill = ab_ridged_saddle_costal)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Ridged saddle-shaped silica bodies in
   costal zone of abaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_abaxial_ridged_saddle_cost.tiff", plot = forest_pie_abaxial_ridged_saddle_cost, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_abaxial_ridged_saddle_cost.tiff", plot = river_pie_abaxial_ridged_saddle_cost, width = 6, height = 4, units = "in", dpi = 600)
 ```
-##General forest: Pie chart of simple papillae on long cells in stomatal region on adaxial leaf surface presence/absence
+
+##River: Pie chart of simple papillae on long cells in stomatal region on adaxial leaf surface presence/absence
 ```{r}
 #Group by simple papillae on long cells in stomatal region on adaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_simple_pap_stom_ad <- guadualeaf_general_forest %>% 
+guadualeaf_river_simple_pap_stom_ad <- guadualeaf_river %>% 
   group_by(ad_simple_papillae_long_cells_stomatal) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -633,10 +632,10 @@ guadualeaf_general_forest_simple_pap_stom_ad <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_ridged_saddle_cost_ab)
+#view(guadualeaf_river_ridged_saddle_cost_ab)
 
-#Create labeled pie chart of percentage of general forest specimens with simple papillae on long cells in stomatal region on abaxial surface
-ggplot(guadualeaf_general_forest_simple_pap_stom_ad, aes(x = "", y = perc, fill = ad_simple_papillae_long_cells_stomatal)) +
+#Create labeled pie chart of percentage of river specimens with simple papillae on long cells in stomatal region on abaxial surface
+ggplot(guadualeaf_river_simple_pap_stom_ad, aes(x = "", y = perc, fill = ad_simple_papillae_long_cells_stomatal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -648,21 +647,22 @@ ggplot(guadualeaf_general_forest_simple_pap_stom_ad, aes(x = "", y = perc, fill 
   theme_void()
 
 
-forest_pie_adaxial_papillae_simple_stomatal <- ggplot(guadualeaf_general_forest_simple_pap_stom_ad, aes(x = "", y = perc, fill = ad_simple_papillae_long_cells_stomatal)) +
+river_pie_adaxial_papillae_simple_stomatal <- ggplot(guadualeaf_river_simple_pap_stom_ad, aes(x = "", y = perc, fill = ad_simple_papillae_long_cells_stomatal)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Simple papillae on long cells of 
   stomatal region on adaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("Forest") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_adaxial_simple_papillae_stomatal.tiff", plot = forest_pie_adaxial_papillae_simple_stomatal, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_adaxial_simple_papillae_stomatal.tiff", plot = river_pie_adaxial_papillae_simple_stomatal, width = 6, height = 4, units = "in", dpi = 600)
 ```
-##General forest: Pie chart of bicellular microhairs on adaxial leaf surface presence/absence
+
+##River: Pie chart of bicellular microhairs on adaxial leaf surface presence/absence
 ```{r}
 #Group by bicellular microhairs on adaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_per_ad_bimicro <- guadualeaf_general_forest %>% 
+guadualeaf_river_per_ad_bimicro <- guadualeaf_river %>% 
   group_by(ad_bimicro) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -670,10 +670,10 @@ guadualeaf_general_forest_per_ad_bimicro <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_per_ad_bimicro)
+#view(guadualeaf_river_per_ad_bimicro)
 
-#Create labeled pie chart of percentage of general forest specimens with macrohairs on adaxial surface
-ggplot(guadualeaf_general_forest_per_ad_bimicro, aes(x = "", y = perc, fill = ad_bimicro)) +
+#Create labeled pie chart of percentage of river specimens with macrohairs on adaxial surface
+ggplot(guadualeaf_river_per_ad_bimicro, aes(x = "", y = perc, fill = ad_bimicro)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -685,22 +685,22 @@ ggplot(guadualeaf_general_forest_per_ad_bimicro, aes(x = "", y = perc, fill = ad
   theme_void()
 
 
-forest_pie_adaxial_bimicro <- ggplot(guadualeaf_general_forest_per_ad_bimicro, aes(x = "", y = perc, fill = ad_bimicro)) +
+river_pie_adaxial_bimicro <- ggplot(guadualeaf_river_per_ad_bimicro, aes(x = "", y = perc, fill = ad_bimicro)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Bicellular microhairs on adaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_adaxial_bimicro.tiff", plot = forest_pie_adaxial_bimicro, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_adaxial_bimicro.tiff", plot = river_pie_adaxial_bimicro, width = 6, height = 4, units = "in", dpi = 600)
 
 ```
 
-##General forest: Pie chart of macrohairs on adaxial leaf surface presence/absence
+##River: Pie chart of macrohairs on adaxial leaf surface presence/absence
 ```{r}
 #Group by macrohairs on adaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_per_ad_macro <- guadualeaf_general_forest %>% 
+guadualeaf_river_per_ad_macro <- guadualeaf_river %>% 
   group_by(ad_macro) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -708,10 +708,10 @@ guadualeaf_general_forest_per_ad_macro <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_per_ad_macro)
+#view(guadualeaf_river_per_ad_macro)
 
-#Create labeled pie chart of percentage of general forest specimens with macrohairs on adaxial surface
-ggplot(guadualeaf_general_forest_per_ad_macro, aes(x = "", y = perc, fill = ad_macro)) +
+#Create labeled pie chart of percentage of river specimens with macrohairs on adaxial surface
+ggplot(guadualeaf_river_per_ad_macro, aes(x = "", y = perc, fill = ad_macro)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -723,22 +723,22 @@ ggplot(guadualeaf_general_forest_per_ad_macro, aes(x = "", y = perc, fill = ad_m
   theme_void()
 
 
-forest_pie_adaxial_macro <- ggplot(guadualeaf_general_forest_per_ad_macro, aes(x = "", y = perc, fill = ad_macro)) +
+river_pie_adaxial_macro <- ggplot(guadualeaf_river_per_ad_macro, aes(x = "", y = perc, fill = ad_macro)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Macrohairs on adaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_adaxial_macro.tiff", plot = forest_pie_adaxial_macro, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_adaxial_macro.tiff", plot = river_pie_adaxial_macro, width = 6, height = 4, units = "in", dpi = 600)
 
 ```
 
-##General forest: Pie chart of smooth saddle-shaped silica bodies in intercostal zones on adaxial leaf surface presence/absence
+##River: Pie chart of smooth saddle-shaped silica bodies in intercostal zones on adaxial leaf surface presence/absence
 ```{r}
 #Group by smooth saddle-shaped silica bodes in intercostal zones on adaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_smooth_saddle_int_ad <- guadualeaf_general_forest %>% 
+guadualeaf_river_smooth_saddle_int_ad <- guadualeaf_river %>% 
   group_by(ad_smooth_saddle_intercostal) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -746,10 +746,10 @@ guadualeaf_general_forest_smooth_saddle_int_ad <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_smooth_saddle_int_ad)
+#view(guadualeaf_river_smooth_saddle_int_ad)
 
-#Create labeled pie chart of percentage of general forest specimens with smooth saddle-shaped silica bodies on long cells of intercostal zones on adaxial surface
-ggplot(guadualeaf_general_forest_smooth_saddle_int_ad, aes(x = "", y = perc, fill = ad_smooth_saddle_intercostal)) +
+#Create labeled pie chart of percentage of river specimens with smooth saddle-shaped silica bodies on long cells of intercostal zones on adaxial surface
+ggplot(guadualeaf_river_smooth_saddle_int_ad, aes(x = "", y = perc, fill = ad_smooth_saddle_intercostal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -761,21 +761,22 @@ ggplot(guadualeaf_general_forest_smooth_saddle_int_ad, aes(x = "", y = perc, fil
   theme_void()
 
 
-forest_pie_adaxial_smooth_saddle_int <- ggplot(guadualeaf_general_forest_smooth_saddle_int_ad, aes(x = "", y = perc, fill = ad_smooth_saddle_intercostal)) +
+river_pie_adaxial_smooth_saddle_int <- ggplot(guadualeaf_river_smooth_saddle_int_ad, aes(x = "", y = perc, fill = ad_smooth_saddle_intercostal)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Smooth saddle-shaped silica bodies in 
   intercostal zone on adaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_adaxial_smooth_saddle_int.tiff", plot = forest_pie_adaxial_smooth_saddle_int, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_adaxial_smooth_saddle_int.tiff", plot = river_pie_adaxial_smooth_saddle_int, width = 6, height = 4, units = "in", dpi = 600)
 ```
-##General forest: Pie chart of nodular silica bodies in intercostal zones on adaxial leaf surface presence/absence
+
+##River: Pie chart of nodular silica bodies in intercostal zones on adaxial leaf surface presence/absence
 ```{r}
 #Group by nodular silica bodes in intercostal zones on adaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_nodular_int_ad <- guadualeaf_general_forest %>% 
+guadualeaf_river_nodular_int_ad <- guadualeaf_river %>% 
   group_by(ad_nodular_intercostal) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -783,10 +784,10 @@ guadualeaf_general_forest_nodular_int_ad <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_nodular_int_ad)
+#view(guadualeaf_river_nodular_int_ad)
 
-#Create labeled pie chart of percentage of general forest specimens with nodular silica bodies on long cells of intercostal zones on adaxial surface
-ggplot(guadualeaf_general_forest_nodular_int_ad, aes(x = "", y = perc, fill = ad_nodular_intercostal)) +
+#Create labeled pie chart of percentage of river specimens with nodular silica bodies on long cells of intercostal zones on adaxial surface
+ggplot(guadualeaf_river_nodular_int_ad, aes(x = "", y = perc, fill = ad_nodular_intercostal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -798,22 +799,22 @@ ggplot(guadualeaf_general_forest_nodular_int_ad, aes(x = "", y = perc, fill = ad
   theme_void()
 
 
-forest_pie_adaxial_nodular_int <- ggplot(guadualeaf_general_forest_nodular_int_ad, aes(x = "", y = perc, fill = ad_nodular_intercostal)) +
+river_pie_adaxial_nodular_int <- ggplot(guadualeaf_river_nodular_int_ad, aes(x = "", y = perc, fill = ad_nodular_intercostal)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Nodular silica bodies in 
   intercostal zone on adaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_adaxial_nodular_int.tiff", plot = forest_pie_adaxial_nodular_int, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_adaxial_nodular_int.tiff", plot = river_pie_adaxial_nodular_int, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
-##General forest: Pie chart of bilobate silica bodies in costal zones on adaxial leaf surface presence/absence
+##River: Pie chart of bilobate silica bodies in costal zones on adaxial leaf surface presence/absence
 ```{r}
 #Group by bilobate silica bodes in intercostal zones on adaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_bilobate_cost_ad <- guadualeaf_general_forest %>% 
+guadualeaf_river_bilobate_cost_ad <- guadualeaf_river %>% 
   group_by(ad_bilobate_costal) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -821,10 +822,10 @@ guadualeaf_general_forest_bilobate_cost_ad <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_bilobate_cost_ad)
+#view(guadualeaf_river_bilobate_cost_ad)
 
-#Create labeled pie chart of percentage of general forest specimens with bilobate silica bodies on long cells of costal zones on abaxial surface
-ggplot(guadualeaf_general_forest_bilobate_cost_ad, aes(x = "", y = perc, fill = ad_bilobate_costal)) +
+#Create labeled pie chart of percentage of river specimens with bilobate silica bodies on long cells of costal zones on adaxial surface
+ggplot(guadualeaf_river_bilobate_cost_ad, aes(x = "", y = perc, fill = ad_bilobate_costal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -836,21 +837,22 @@ ggplot(guadualeaf_general_forest_bilobate_cost_ad, aes(x = "", y = perc, fill = 
   theme_void()
 
 
-forest_pie_adaxial_bilobate_cost <- ggplot(guadualeaf_general_forest_bilobate_cost_ad, aes(x = "", y = perc, fill = ad_bilobate_costal)) +
+river_pie_adaxial_bilobate_cost <- ggplot(guadualeaf_river_bilobate_cost_ad, aes(x = "", y = perc, fill = ad_bilobate_costal)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Bilobate silica bodies in 
   costal zone on adaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
-ggsave("forest_pie_adaxial_bilobate_cost.tiff", plot = forest_pie_adaxial_bilobate_cost, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("river_pie_adaxial_bilobate_cost.tiff", plot = river_pie_adaxial_bilobate_cost, width = 6, height = 4, units = "in", dpi = 600)
 ```
-##General forest: Pie chart of ridged saddle-shaped silica bodies in costal zones on adaxial leaf surface presence/absence
+
+##River: Pie chart of ridged saddle-shaped silica bodies in costal zones on adaxial leaf surface presence/absence
 ```{r}
 #Group by ridged saddle-shaped silica bodes in intercostal zones on adaxial surface only and obtain percentage present/absent
-guadualeaf_general_forest_ridged_saddle_cost_ad <- guadualeaf_general_forest %>% 
+guadualeaf_river_ridged_saddle_cost_ad <- guadualeaf_river %>% 
   group_by(ad_ridged_saddle_costal) %>% # Variable to be transformed
   count() %>% 
   ungroup() %>% 
@@ -858,10 +860,10 @@ guadualeaf_general_forest_ridged_saddle_cost_ad <- guadualeaf_general_forest %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_ridged_saddle_cost_ad)
+#view(guadualeaf_river_ridged_saddle_cost_ad)
 
-#Create labeled pie chart of percentage of general forest specimens with ridged saddle-shaped silica bodies on long cells of costal zones on adaxial surface
-ggplot(guadualeaf_general_forest_ridged_saddle_cost_ad, aes(x = "", y = perc, fill = ad_ridged_saddle_costal)) +
+#Create labeled pie chart of percentage of river specimens with ridged saddle-shaped silica bodies on long cells of costal zones on adaxial surface
+ggplot(guadualeaf_river_ridged_saddle_cost_ad, aes(x = "", y = perc, fill = ad_ridged_saddle_costal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
              position = position_stack(vjust = 0.5),
@@ -873,12 +875,555 @@ ggplot(guadualeaf_general_forest_ridged_saddle_cost_ad, aes(x = "", y = perc, fi
   theme_void()
 
 
-forest_pie_adaxial_ridged_saddle_cost <- ggplot(guadualeaf_general_forest_ridged_saddle_cost_ad, aes(x = "", y = perc, fill = ad_ridged_saddle_costal)) +
+river_pie_adaxial_ridged_saddle_cost <- ggplot(guadualeaf_river_ridged_saddle_cost_ad, aes(x = "", y = perc, fill = ad_ridged_saddle_costal)) +
   geom_col() +
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Ridged saddle-shaped silica bodies in 
   costal zone on adaxial surface")) +
+  ggtitle("River") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("river_pie_adaxial_ridged_saddle_cost.tiff", plot = river_pie_adaxial_ridged_saddle_cost, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+
+## Pie charts - specimens from forest species
+
+##Filtering dataframe for forest species only
+```{r}
+#Filter dataframe of foliar micromorphology to include only forest species
+guadualeaf_forest <- df_guadualeaf %>%
+  filter(habitat == "forest")
+```
+
+##Forest: Pie chart of simple papillae on long cells of stomatal regions on abaxial leaf surface presence/absence
+```{r}
+#Group by simple papillae on long cells of stomatal regions on abaxial surface only and obtain percentage present/absent
+guadualeaf_forest_per_ab_pap_sto <- guadualeaf_forest %>% 
+  group_by(ab_simple_papillae_long_cells_stomatal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_per_ab_pap_sto)
+
+#Create labeled pie chart of percentage of forest specimens with papillae on long cells of stomatal regions on abaxial surface
+ggplot(guadualeaf_forest_per_ab_pap_sto, aes(x = "", y = perc, fill = ab_simple_papillae_long_cells_stomatal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae on long cells
+of stomatal region")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_abaxial_simple_papillae_stomatal <- ggplot(guadualeaf_forest_per_ab_pap_sto, aes(x = "", y = perc, fill = ab_simple_papillae_long_cells_stomatal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae on long cells
+of stomatal region of abaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_abaxial_simple_papillae_stomatal.tiff", plot = forest_pie_abaxial_simple_papillae_stomatal, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+
+##Forest: Pie chart of simple papillae on long cells of interstomatal regions of abaxial leaf surface presence/absence
+```{r}
+#Group by branched papillae on long cells of interstomatal regions on abaxial surface only and obtain percentage present/absent
+guadualeaf_forest_per_ab_pap_int <- guadualeaf_forest %>% 
+  group_by(ab_branch_papillae_long_cells_interstomatal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_per_ab_pap)
+
+#Create labeled pie chart of percentage of forest specimens with branched papillae on long cells of interstomatal regions on abaxial surface
+ggplot(guadualeaf_forest_per_ab_pap_int, aes(x = "", y = perc, fill = ab_branch_papillae_long_cells_interstomatal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Branched papillae absent or present on long cells
+                             of interstomatal region of abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_abaxial_branched_papillae_interstomatal <- ggplot(guadualeaf_forest_per_ab_pap_int, aes(x = "", y = perc, fill = ab_branch_papillae_long_cells_interstomatal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Branched papillae on long cells
+  of interstomatal region of abaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_abaxial_branched_papillae_interstomatal.tiff", plot = forest_pie_abaxial_branched_papillae_interstomatal, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+
+##Forest: Pie chart of macrohairs on abaxial leaf surface presence/absence
+```{r}
+#Group by macrohairs on abaxial surface only and obtain percentage present/absent
+guadualeaf_forest_per_ab_macro <- guadualeaf_forest %>% 
+  group_by(ab_macro) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_per_ab_macro)
+
+#Create labeled pie chart of percentage of forest specimens with papillae on long cells of interstomatal zones on abaxial surface
+ggplot(guadualeaf_forest_per_ab_macro, aes(x = "", y = perc, fill = ab_macro)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Macrohairs absent or present on
+ abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_abaxial_macrohair <- ggplot(guadualeaf_forest_per_ab_macro, aes(x = "", y = perc, fill = ab_macro)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Macrohairs on abaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_abaxial_macrohair.tiff", plot = forest_pie_abaxial_macrohair, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Forest: Pie chart of smooth saddle-shaped silica bodies in intercostal zones on abaxial leaf surface presence/absence
+```{r}
+#Group by smooth saddle-shaped silica bodes in intercostal zones on abaxial surface only and obtain percentage present/absent
+guadualeaf_forest_smooth_saddle_int_ab <- guadualeaf_forest %>% 
+  group_by(ab_smooth_saddle_intercostal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_smooth_saddle_int_ab)
+
+#Create labeled pie chart of percentage of forest specimens with smooth saddle-shaped silica bodies on long cells of intercostal zones on abaxial surface
+ggplot(guadualeaf_forest_smooth_saddle_int_ab, aes(x = "", y = perc, fill = ab_smooth_saddle_intercostal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Smooth saddle-shaped silica bodies absent or present in
+                             of intercostal zone of abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_abaxial_smooth_saddle_int <- ggplot(guadualeaf_forest_smooth_saddle_int_ab, aes(x = "", y = perc, fill = ab_smooth_saddle_intercostal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Smooth saddle-shaped silica bodies in
+  intercostal zone of abaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_abaxial_smooth_saddle_int.tiff", plot = forest_pie_abaxial_smooth_saddle_int, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Forest: Pie chart of nodular silica bodies in intercostal zones on abaxial leaf surface presence/absence
+```{r}
+#Group by nodular silica bodes in intercostal zones on abaxial surface only and obtain percentage present/absent
+guadualeaf_forest_nodular_int_ab <- guadualeaf_forest %>% 
+  group_by(ab_nodular_intercostal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_nodular_int_ab)
+
+#Create labeled pie chart of percentage of forest specimens with nodular silica bodies on long cells of intercostal zones on abaxial surface
+ggplot(guadualeaf_forest_nodular_int_ab, aes(x = "", y = perc, fill = ab_nodular_intercostal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Nodular silica bodies absent or present in
+                             of intercostal zone of abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_abaxial_nodular_int <- ggplot(guadualeaf_forest_nodular_int_ab, aes(x = "", y = perc, fill = ab_nodular_intercostal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Nodular silica bodies in
+  intercostal zone of abaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_abaxial_nodular_int.tiff", plot = forest_pie_abaxial_nodular_int, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Forest: Pie chart of bilobate silica bodies in costal zones on abaxial leaf surface presence/absence
+```{r}
+#Group by bilobate silica bodes in intercostal zones on abaxial surface only and obtain percentage present/absent
+guadualeaf_forest_bilobate_cost_ab <- guadualeaf_forest %>% 
+  group_by(ab_bilobate_costal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_bilobate_cost_ab)
+
+#Create labeled pie chart of percentage of forest specimens with bilobate silica bodies on long cells of costal zones on abaxial surface
+ggplot(guadualeaf_forest_bilobate_cost_ab, aes(x = "", y = perc, fill = ab_bilobate_costal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Bilobate silica bodies absent or present in
+            of costal zone of abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+forest_pie_abaxial_bilobate_cost <- ggplot(guadualeaf_forest_bilobate_cost_ab, aes(x = "", y = perc, fill = ab_bilobate_costal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Bilobate silica bodies in
+  costal zone of abaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_abaxial_bilobate_cost.tiff", plot = forest_pie_abaxial_bilobate_cost, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Forest: Pie chart of ridged saddle-shaped silica bodies in costal zones on abaxial leaf surface presence/absence
+```{r}
+#Group by ridged saddle-shaped silica bodes in intercostal zones on abaxial surface only and obtain percentage present/absent
+guadualeaf_forest_ridged_saddle_cost_ab <- guadualeaf_forest %>% 
+  group_by(ab_ridged_saddle_costal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_ridged_saddle_cost_ab)
+
+#Create labeled pie chart of percentage of forest specimens with ridged saddle-shaped silica bodies on long cells of intercostal zones on abaxial surface
+ggplot(guadualeaf_forest_ridged_saddle_cost_ab, aes(x = "", y = perc, fill = ab_ridged_saddle_costal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Ridged saddle-shaped silica bodies absent or present in
+            of costal zone of abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_abaxial_ridged_saddle_cost <- ggplot(guadualeaf_forest_ridged_saddle_cost_ab, aes(x = "", y = perc, fill = ab_ridged_saddle_costal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Ridged saddle-shaped silica bodies in
+  costal zone of abaxial surface")) +
   ggtitle("Forest and Riparian") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_abaxial_ridged_saddle_cost.tiff", plot = forest_pie_abaxial_ridged_saddle_cost, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Forest: Pie chart of simple papillae on long cells in stomatal region on adaxial leaf surface presence/absence
+```{r}
+#Group by simple papillae on long cells in stomatal region on adaxial surface only and obtain percentage present/absent
+guadualeaf_forest_simple_pap_stom_ad <- guadualeaf_forest %>% 
+  group_by(ad_simple_papillae_long_cells_stomatal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_ridged_saddle_cost_ab)
+
+#Create labeled pie chart of percentage of forest specimens with simple papillae on long cells in stomatal region on abaxial surface
+ggplot(guadualeaf_forest_simple_pap_stom_ad, aes(x = "", y = perc, fill = ad_simple_papillae_long_cells_stomatal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae on long cells absent or present
+                    in stomatal region on abaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_adaxial_papillae_simple_stomatal <- ggplot(guadualeaf_forest_simple_pap_stom_ad, aes(x = "", y = perc, fill = ad_simple_papillae_long_cells_stomatal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Simple papillae on long cells of 
+  stomatal region on adaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_adaxial_simple_papillae_stomatal.tiff", plot = forest_pie_adaxial_papillae_simple_stomatal, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Forest: Pie chart of bicellular microhairs on adaxial leaf surface presence/absence
+```{r}
+#Group by bicellular microhairs on adaxial surface only and obtain percentage present/absent
+guadualeaf_forest_per_ad_bimicro <- guadualeaf_forest %>% 
+  group_by(ad_bimicro) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_per_ad_bimicro)
+
+#Create labeled pie chart of percentage of forest specimens with macrohairs on adaxial surface
+ggplot(guadualeaf_forest_per_ad_bimicro, aes(x = "", y = perc, fill = ad_bimicro)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Bicellular microhairs absent or present on
+ adaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_adaxial_bimicro <- ggplot(guadualeaf_forest_per_ad_bimicro, aes(x = "", y = perc, fill = ad_bimicro)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Bicellular microhairs on adaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_adaxial_bimicro.tiff", plot = forest_pie_adaxial_bimicro, width = 6, height = 4, units = "in", dpi = 600)
+
+```
+
+##Forest: Pie chart of macrohairs on adaxial leaf surface presence/absence
+```{r}
+#Group by macrohairs on adaxial surface only and obtain percentage present/absent
+guadualeaf_forest_per_ad_macro <- guadualeaf_forest %>% 
+  group_by(ad_macro) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_per_ad_macro)
+
+#Create labeled pie chart of percentage of forest specimens with macrohairs on adaxial surface
+ggplot(guadualeaf_forest_per_ad_macro, aes(x = "", y = perc, fill = ad_macro)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Macrohairs absent or present on
+ adaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_adaxial_macro <- ggplot(guadualeaf_forest_per_ad_macro, aes(x = "", y = perc, fill = ad_macro)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Macrohairs on adaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_adaxial_macro.tiff", plot = forest_pie_adaxial_macro, width = 6, height = 4, units = "in", dpi = 600)
+
+```
+
+##Forest: Pie chart of smooth saddle-shaped silica bodies in intercostal zones on adaxial leaf surface presence/absence
+```{r}
+#Group by smooth saddle-shaped silica bodes in intercostal zones on adaxial surface only and obtain percentage present/absent
+guadualeaf_forest_smooth_saddle_int_ad <- guadualeaf_forest %>% 
+  group_by(ad_smooth_saddle_intercostal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_smooth_saddle_int_ad)
+
+#Create labeled pie chart of percentage of forest specimens with smooth saddle-shaped silica bodies on long cells of intercostal zones on adaxial surface
+ggplot(guadualeaf_forest_smooth_saddle_int_ad, aes(x = "", y = perc, fill = ad_smooth_saddle_intercostal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Smooth saddle-shaped silica bodies absent or present in
+                             of intercostal zone of adaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_adaxial_smooth_saddle_int <- ggplot(guadualeaf_forest_smooth_saddle_int_ad, aes(x = "", y = perc, fill = ad_smooth_saddle_intercostal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Smooth saddle-shaped silica bodies in 
+  intercostal zone on adaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_adaxial_smooth_saddle_int.tiff", plot = forest_pie_adaxial_smooth_saddle_int, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Forest: Pie chart of nodular silica bodies in intercostal zones on adaxial leaf surface presence/absence
+```{r}
+#Group by nodular silica bodes in intercostal zones on adaxial surface only and obtain percentage present/absent
+guadualeaf_forest_nodular_int_ad <- guadualeaf_forest %>% 
+  group_by(ad_nodular_intercostal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_nodular_int_ad)
+
+#Create labeled pie chart of percentage of forest specimens with nodular silica bodies on long cells of intercostal zones on adaxial surface
+ggplot(guadualeaf_forest_nodular_int_ad, aes(x = "", y = perc, fill = ad_nodular_intercostal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Nodular silica bodies absent or present in
+                             of intercostal zone of adaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_adaxial_nodular_int <- ggplot(guadualeaf_forest_nodular_int_ad, aes(x = "", y = perc, fill = ad_nodular_intercostal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Nodular silica bodies in 
+  intercostal zone on adaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_adaxial_nodular_int.tiff", plot = forest_pie_adaxial_nodular_int, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Forest: Pie chart of bilobate silica bodies in costal zones on adaxial leaf surface presence/absence
+```{r}
+#Group by bilobate silica bodes in intercostal zones on adaxial surface only and obtain percentage present/absent
+guadualeaf_forest_bilobate_cost_ad <- guadualeaf_forest %>% 
+  group_by(ad_bilobate_costal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_bilobate_cost_ad)
+
+#Create labeled pie chart of percentage of forest specimens with bilobate silica bodies on long cells of costal zones on adaxial surface
+ggplot(guadualeaf_forest_bilobate_cost_ad, aes(x = "", y = perc, fill = ad_bilobate_costal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Bilobate silica bodies absent or present in
+            of costal zone of adaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_adaxial_bilobate_cost <- ggplot(guadualeaf_forest_bilobate_cost_ad, aes(x = "", y = perc, fill = ad_bilobate_costal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Bilobate silica bodies in 
+  costal zone on adaxial surface")) +
+  ggtitle("Forest") +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+ggsave("forest_pie_adaxial_bilobate_cost.tiff", plot = forest_pie_adaxial_bilobate_cost, width = 6, height = 4, units = "in", dpi = 600)
+```
+
+##Forest: Pie chart of ridged saddle-shaped silica bodies in costal zones on adaxial leaf surface presence/absence
+```{r}
+#Group by ridged saddle-shaped silica bodes in intercostal zones on adaxial surface only and obtain percentage present/absent
+guadualeaf_forest_ridged_saddle_cost_ad <- guadualeaf_forest %>% 
+  group_by(ad_ridged_saddle_costal) %>% # Variable to be transformed
+  count() %>% 
+  ungroup() %>% 
+  mutate(perc = `n` / sum(`n`)) %>% 
+  arrange(perc) %>%
+  mutate(labels = scales::percent(perc))
+
+#view(guadualeaf_forest_ridged_saddle_cost_ad)
+
+#Create labeled pie chart of percentage of forest specimens with ridged saddle-shaped silica bodies on long cells of costal zones on adaxial surface
+ggplot(guadualeaf_forest_ridged_saddle_cost_ad, aes(x = "", y = perc, fill = ad_ridged_saddle_costal)) +
+  geom_col(color = "black") +
+  geom_label(aes(label = labels),
+             position = position_stack(vjust = 0.5),
+             show.legend = FALSE) +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Ridged saddle-shaped silica bodies absent or present in
+            of costal zone of adaxial surface")) +
+  scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
+  theme_void()
+
+
+forest_pie_adaxial_ridged_saddle_cost <- ggplot(guadualeaf_forest_ridged_saddle_cost_ad, aes(x = "", y = perc, fill = ad_ridged_saddle_costal)) +
+  geom_col() +
+  coord_polar(theta = "y") +
+  guides(fill = guide_legend(title = "Ridged saddle-shaped silica bodies in 
+  costal zone on adaxial surface")) +
+  ggtitle("Forest") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
