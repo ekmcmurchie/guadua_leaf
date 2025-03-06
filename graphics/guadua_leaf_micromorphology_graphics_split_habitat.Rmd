@@ -1,7 +1,7 @@
 ---
 title: "Guadua Leaf Micromorphology Graphics"
-author: "Elizabeth McMurchie"
-date: "2022-09-07"
+author: "Elizabeth McMurchie and Devin Molnau"
+date: "2025-03-06"
 output: html_document
 ---
 
@@ -36,7 +36,7 @@ df_guadualeaf <- data.frame(lapply(df_guadualeaf,as.factor)) # set columns as fa
 ```
 
 ### Correlation
-Viewing the correlation dataframe is useful for understanding which traits are correlated.The two-sided correlation plot was used as Appendix Figure 1 (Figure A.1) in the manuscript. The one-sided correlation plot was not used in the manuscript; this image was used to more easily visualize each correlation.
+Viewing the correlation dataframe is useful for understanding which traits are correlated.The two-sided correlation plot was used as Appendix C Figure 1 (Figure C.1) in the manuscript. The one-sided correlation plot was not used in the manuscript; this image was used to more easily visualize each correlation.
 ```{r}
 guadua_y_binary <- df_guadualeaf[,9:ncol(df_guadualeaf)] # reads in the binary data only 
 guadua_y_binary_df <- data.frame(lapply(guadua_y_binary,function(x) as.numeric(levels(x))[x]))
@@ -50,21 +50,19 @@ correlation_y_guadua <- data.frame(cor(guadua_y_binary_df)) #calculated the corr
 
 ggcorrplot(correlation_y_guadua, hc.order = TRUE, lab = TRUE)
 
-corrs <- ggcorrplot(correlation_y_guadua, hc.order = TRUE, lab = TRUE)
+corrs <- ggcorrplot(correlation_y_guadua, hc.order = TRUE, lab = TRUE, ggtheme = theme_bw())
 
 ggsave("leafcorrplot.pdf", plot = corrs, width = 26, height = 22, units = "in", dpi = 600)
 
-ggsave("leafcorrplot.jpg", plot = corrs, width = 26, height = 22, units = "in", dpi = 600)
 
 ggsave("leafcorrplot.tiff", plot = corrs, width = 26, height = 22, units = "in", dpi = 600)
 
 #One-sided correlation plot
 
-corrs2 <- ggcorrplot(correlation_y_guadua, hc.order = TRUE, lab = TRUE, type = "upper")
+corrs2 <- ggcorrplot(correlation_y_guadua, hc.order = TRUE, lab = TRUE, type = "upper", ggtheme = theme_bw())
 
-ggsave("leafcorrplot2.pdf", plot = corrs2, width = 26, height = 22, units = "in", dpi = 600)
+ggsave("leafcorrplot2.tiff", plot = corrs2, width = 26, height = 22, units = "in", dpi = 600)
 
-ggsave("leafcorrplot2.jpg", plot = corrs2, width = 26, height = 22, units = "in", dpi = 600)
 ```
 
 ### PCoA 
@@ -76,7 +74,7 @@ PCoA <- cmdscale(guadua_y_dist_matrix, eig = TRUE, x.ret = TRUE, list. = TRUE) #
 ```
 
 # PCoA grouped by habit (3 categories)
-For this PCoA, individual specimens are colored by the habit typical of their species. Three habitat groups were used: big and erect, leaning/climbing, and small arching. This PCoA is used as Figure 4 in the manuscript.
+For this PCoA, individual specimens are colored by the habit typical of their species. Three habitat groups were used: big and erect, leaning/climbing, and small arching. This PCoA is used as Figure 6 in the manuscript.
 ```{r}
 group.colors <- c("big_erect" = "#7b3294", "leaning_climbing" = "#1b7837",
                   "small_arching" = "#f1a340") #to set colors
@@ -94,14 +92,16 @@ habitatpcoa <- nice_df %>%
                      labels = c("Tall and erect", "Leaning/climbing", "Small arching"),
                      values = c(15, 17, 19)) + 
   theme_minimal() +
-  theme(
-    panel.border = element_rect(size = 2, color = "black", fill = NA)
+  theme(panel.border = element_rect(size = 2, color = "black", fill = NA)
   ) + 
+  theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     color = "Habit", 
     x = "Axis 1",
     y = "Axis 2"
   )
+
+plot(habitatpcoa)
 
 ggsave("leafhabits3.pdf", plot = habitatpcoa, width = 6, height = 4, units = "in", dpi = 600)
 
@@ -109,13 +109,13 @@ ggsave("leafhabits3.tiff", plot = habitatpcoa, width = 6, height = 4, units = "i
 ```
 
 # PCoA grouped by species
-For this PCoA, individual specimens are colored by species. This PCoA is used as Appendix Figure 5 in the manuscript.
+For this PCoA, individual specimens are colored by species. This PCoA is used as Figure 8 in the manuscript.
 
 ```{r}
 
 group.colors <- c("g_aculeata" = "#7b3294", "g_amplexifolia" = "#1b7837",
-                  "g_angustifolia" = "#f1a340", "g_calderoniana" = "#9970ab","g_chacoensis" = "#5aae61",
-                  "g_chaparensis" = "#7f3b08", "g_ciliata" = "#40004b", "g_glomerata" = "#00441b", 
+                  "g_angustifolia" = "#f1a340", "g_calderoniana" = "#00441b","g_chacoensis" = "#5aae61",
+                  "g_chaparensis" = "#7f3b08", "g_ciliata" = "#40004b", "g_glomerata" = "#9970ab", 
                   "g_guzmanii" = "#253494", "g_incana" = "#c7e9b4", "g_latifolia" = "#7fcdbb", 
                   "g_longifolia" = "#bd0026", "g_maclurei" = "#fed976", "g_macrospiculata" = "#bfd3e6", 
                   "g_macrostachya" = "#fd8d3c", "g_paniculata" = "#e7298a", 
@@ -179,6 +179,7 @@ speciespcoa <- nice_df %>%
   theme(
     panel.border = element_rect(size = 2, color = "black", fill = NA)
   ) + 
+    theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     color = "Species", 
     x = "Axis 1",
@@ -193,41 +194,9 @@ ggsave("leafspecies.tiff", plot = speciespcoa, width = 10, height = 6, units = "
 
 ```
 
-# PCoA grouped by habit ( categories)
-For this PCoA, individual specimens are colored by the habit typical of their species. Two habitat groups were used: big and erect or leaning/climbing and small arching. This PCoA was not used in the manuscript; it was simply used to visualize the broader categories used for data analysis.
-```{r}
-group.colors2 <- c("erect_or_climbing" = "#7b3294","small_arching" = "#f1a340")
-
-nice_df <- PCoA$points %>% 
-  data.frame
-nice_df$general_habit <- df_guadualeaf$general_habit
-habits2pcoa <- nice_df %>% 
-  ggplot(aes(X1, X2)) +
-  geom_point(aes(color = general_habit, shape = general_habit), size = 2) +
-  scale_color_manual(name = "Habit", breaks = c("erect_or_climbing", "small_arching"),
-                     labels = c("Erect or climbing", "Small arching"),
-                     values = group.colors2) + 
-  scale_shape_manual(name = "Habit", breaks = c("erect_or_climbing", "small_arching"),
-                     labels = c("Erect or climbing", "Small arching"),
-                     values = c(15, 19)) + 
-  theme_minimal() +
-  theme(
-    panel.border = element_rect(size = 2, color = "black", fill = NA)
-  ) + 
-  labs(
-    color = "Habit", 
-    x = "Axis 1",
-    y = "Axis 2"
-  )
-
-ggsave("leafhabits2.pdf", plot = habits2pcoa, width = 6, height = 4, units = "in", dpi = 600)
-
-ggsave("leafhabits2.tiff", plot = habits2pcoa, width = 6, height = 4, units = "in", dpi = 600)
-
-```
 
 # PCoA grouped by habitat (3 categories)
-For this PCoA, individual specimens are colored by the habitat typical of their species. Three habitat groups were used: Forest, river, and savanna. This PCoA is used as Figure 3 in the manuscript.
+For this PCoA, individual specimens are colored by the habitat typical of their species. Three habitat groups were used: Forest, river, and savanna. This PCoA is used as Figure 7 in the manuscript.
 ```{r}
 group.colors3 <- c("forest" = "#7b3294", "river" = "#1b7837",
                    "savanna" = "#f1a340")
@@ -248,6 +217,7 @@ habitatspcoa <- nice_df %>%
   theme(
     panel.border = element_rect(size = 2, color = "black", fill = NA)
   ) + 
+      theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     color = "Habitat", 
     x = "Axis 1",
@@ -260,38 +230,6 @@ ggsave("leafhabitat3.tiff", plot = habitatspcoa, width = 6, height = 4, units = 
 
 ```
 
-# PCoA grouped by habitat (2 categories)
-For this PCoA, individual specimens are colored by the habitat typical of their species. Two habitat groups were used: Forest or river and savanna. This PCoA was not used in the manuscript; it was simply used to visualize the broader categories later used for data analysis.
-```{r}
-group.colors4 <- c("general_forest" = "#7b3294","savanna" = "#f1a340")
-
-nice_df <- PCoA$points %>% 
-  data.frame
-nice_df$general_habitat <- df_guadualeaf$general_habitat
-habitats2pcoa <- nice_df %>% 
-  ggplot(aes(X1, X2)) +
-  geom_point(aes(color = general_habitat, shape = general_habitat), size = 2) +
-  scale_color_manual(name = "Habitat", breaks = c("general_forest", "savanna"),
-                     labels = c("Forest or River", "Savanna"),
-                     values = group.colors4) + 
-  scale_shape_manual(name = "Habitat", breaks = c("general_forest", "savanna"),
-                     labels = c("Forest or River", "Savanna"),
-                     values = c(15, 19)) + 
-  theme_minimal() +
-  theme(
-    panel.border = element_rect(size = 2, color = "black", fill = NA)
-  ) + 
-  labs(
-    color = "Habitat", 
-    x = "Axis 1",
-    y = "Axis 2"
-  )
-
-
-ggsave("leafhabitat2.pdf", plot = habitats2pcoa, width = 6, height = 4, units = "in", dpi = 600)
-
-ggsave("leafhabitat2.tiff", plot = habitats2pcoa, width = 6, height = 4, units = "in", dpi = 600)
-```
 
 # PCoA grouped by region
 For this PCoA, individual specimens are colored by general region in which the specimen was collected. Four general regions were used: Andes, Central America, and Eastern South America. Assignment of region to each specimen can be seen in 'specimen_data.xls' in the 'documents' folder. This PCoA was not used in the manuscript. We did not expect to see any grouping based on region, as each region contains a variety of species of different habits and habitats.
@@ -316,18 +254,21 @@ regionpcoa <- nice_df %>%
   theme_minimal() +
   theme(
     panel.border = element_rect(size = 2, color = "black", fill = NA)
-  ) + 
+  ) +
+    theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     color = "Region", 
     x = "Axis 1",
     y = "Axis 2"
   )
 
+plot(regionpcoa)
+
 ggsave("leafregion.pdf", plot = regionpcoa, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
 ### Scree plot from the PCoA 
-From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axis 1 is responsible for the majority of variation in the PCoA, followed by a steep drop in variation. By the 25th axis, variation is minimal and by the 50th, arguably negligible. Elbow is at approximately the sixth principal coordinate axis.This image was used as Figure A.3 - Appendix Figure 3 in the manuscript.
+From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axis 1 is responsible for the majority of variation in the PCoA, followed by a steep drop in variation. By the 25th axis, variation is minimal and by the 50th, arguably negligible. Elbow is at approximately the sixth principal coordinate axis.This image was used as Figure C.3 - Appendix C Figure 3 in the manuscript.
 ```{r}
 eig_df <- data.frame( x_values = c(1:length(PCoA$eig)) , eig_value = c(PCoA$eig))
 scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +
@@ -337,6 +278,7 @@ scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +
   theme(
     panel.border = element_rect(size = 2, color = "black", fill = NA)
   ) + 
+  theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     x = "Coordinate number",
     y = "Eigenvalue"
@@ -346,6 +288,9 @@ ggsave("leafscree.pdf", plot = scree, width = 6, height = 4, units = "in", dpi =
 
 ggsave("leafscree.tiff", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
 ```
+
+# Pie Charts
+The following pie charts show percentage of specimens belonging to different habitat groups for which a certain micromorphological feature was present or absent on foliage leaves. These pie charts were used as components of Figures 2 and 3 in the manuscript. 
 
 ## Pie charts - specimens from river species
 
@@ -652,7 +597,7 @@ river_pie_adaxial_papillae_simple_stomatal <- ggplot(guadualeaf_river_simple_pap
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Simple papillae on long cells of 
   stomatal region on adaxial surface")) +
-  ggtitle("Forest") +
+  ggtitle("River") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
@@ -1157,7 +1102,7 @@ forest_pie_abaxial_ridged_saddle_cost <- ggplot(guadualeaf_forest_ridged_saddle_
   coord_polar(theta = "y") +
   guides(fill = guide_legend(title = "Ridged saddle-shaped silica bodies in
   costal zone of abaxial surface")) +
-  ggtitle("Forest and Riparian") +
+  ggtitle("Forest") +
   scale_fill_manual(labels = c("absent", "present"), values = c("#71caeb", "#f7b54a")) +
   theme_void()
 
@@ -1531,7 +1476,7 @@ guadualeaf_savanna_ab_macro <- guadualeaf_savanna %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_ab_macro)
+#view(guadualeaf_savanna_ab_macro)
 
 #Create labeled pie chart of percentage of general forest specimens with papillae on long cells of stomatal zones on abaxial surface
 ggplot(guadualeaf_savanna_ab_macro, aes(x = "", y = perc, fill = ab_macro)) +
@@ -1682,7 +1627,7 @@ guadualeaf_savanna_ridged_saddle_cost_ab <- guadualeaf_savanna %>%
 
 #view(guadualeaf_savanna_ridged_saddle_cost_ab)
 
-#Create labeled pie chart of percentage of general forest specimens with ridged saddle-shaped silica bodies on long cells of costal zones on abaxial surface
+#Create labeled pie chart of percentage of savanna specimens with ridged saddle-shaped silica bodies on long cells of costal zones on abaxial surface
 ggplot(guadualeaf_savanna_ridged_saddle_cost_ab, aes(x = "", y = perc, fill = ab_ridged_saddle_costal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
@@ -1794,7 +1739,7 @@ guadualeaf_savanna_per_ad_macro <- guadualeaf_savanna %>%
   arrange(perc) %>%
   mutate(labels = scales::percent(perc))
 
-#view(guadualeaf_general_forest_per_ad_macro)
+#view(guadualeaf_savanna_per_ad_macro)
 
 #Create labeled pie chart of percentage of savanna specimens with macrohairs on adaxial surface
 ggplot(guadualeaf_savanna_per_ad_macro, aes(x = "", y = perc, fill = ad_macro)) +
@@ -1872,7 +1817,7 @@ guadualeaf_savanna_nodular_int_ad <- guadualeaf_savanna %>%
 
 #view(guadualeaf_savanna_nodular_int_ad)
 
-#Create labeled pie chart of percentage of general forest specimens with nodular silica bodies on long cells of intercostal zones on adaxial surface
+#Create labeled pie chart of percentage of savanna specimens with nodular silica bodies on long cells of intercostal zones on adaxial surface
 ggplot(guadualeaf_savanna_nodular_int_ad, aes(x = "", y = perc, fill = ad_nodular_intercostal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),
@@ -1949,7 +1894,7 @@ guadualeaf_savanna_ridged_saddle_cost_ad <- guadualeaf_savanna %>%
 
 #view(guadualeaf_savanna_ridged_saddle_cost_ad)
 
-#Create labeled pie chart of percentage of general forest specimens with ridged saddle-shaped silica bodies on long cells of costal zones on adaxial surface
+#Create labeled pie chart of percentage of savanna specimens with ridged saddle-shaped silica bodies on long cells of costal zones on adaxial surface
 ggplot(guadualeaf_savanna_ridged_saddle_cost_ad, aes(x = "", y = perc, fill = ad_ridged_saddle_costal)) +
   geom_col(color = "black") +
   geom_label(aes(label = labels),

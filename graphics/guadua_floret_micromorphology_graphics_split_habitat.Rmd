@@ -1,7 +1,7 @@
 ---
 title: "Guadua Floret Micromorphology Graphics"
-author: "Elizabeth McMurchie"
-date: "2022-09-10"
+author: "Elizabeth McMurchie and Devin Molnau"
+date: "2025-03-06"
 output:
   pdf_document: default
   html_document: default
@@ -36,7 +36,7 @@ df_guaduafloret <- data.frame(lapply(df_guaduafloret,as.factor)) # set columns a
 ```
 
 ### Correlation
-Viewing the correlation dataframe is useful for understanding which traits are correlated. The two-sided correlation plot was used as Appendix Figure 2 (Figure A.2) in the manuscript. The one-sided correlation plot was not used in the manuscript; this image was used to more easily visualize each correlation.
+Viewing the correlation dataframe is useful for understanding which traits are correlated. The two-sided correlation plot was used as Appendix C Figure 2 (Figure C.2) in the manuscript. The one-sided correlation plot was not used in the manuscript; this image was used to more easily visualize each correlation.
 ```{r}
 guadua_floret_y_binary <- df_guaduafloret[,10:ncol(df_guaduafloret)] # reads in the binary data only 
 guadua_floret_y_binary_df <- data.frame(lapply(guadua_floret_y_binary,function(x) as.numeric(levels(x))[x]))
@@ -50,23 +50,21 @@ correlation_y_guadua_floret <- data.frame(cor(guadua_floret_y_binary_df)) #calcu
 
 ggcorrplot(correlation_y_guadua_floret, hc.order = TRUE, lab = TRUE)
 
-floretcorrs <- ggcorrplot(correlation_y_guadua_floret, hc.order = TRUE, lab = TRUE)
+floretcorrs <- ggcorrplot(correlation_y_guadua_floret, hc.order = TRUE, lab = TRUE, ggtheme = theme_bw())
 
 ggsave("floretcorrplot.pdf", plot = floretcorrs, width = 20, height = 18, units = "in", dpi = 600)
 
-ggsave("floretcorrplot.jpg", plot = floretcorrs, width = 20, height = 18, units = "in", dpi = 600)
 
 ggsave("floretcorrplot.tiff", plot = floretcorrs, width = 20, height = 18, units = "in", dpi = 600)
 
 #One-sided correlation plot
 
-floretcorrs2 <- ggcorrplot(correlation_y_guadua_floret, hc.order = TRUE, lab = TRUE, type = "upper")
+floretcorrs2 <- ggcorrplot(correlation_y_guadua_floret, hc.order = TRUE, lab = TRUE, type = "upper", ggtheme = theme_bw())
 
 ggsave("floretcorrplot2.pdf", plot = floretcorrs2, width = 20, height = 18, units = "in", dpi = 600)
 
 ggsave("floretcorrplot2.tiff", plot = floretcorrs2, width = 20, height = 18, units = "in", dpi = 600)
 
-ggsave("floretcorrplot2.jpg", plot = floretcorrs2, width = 20, height = 18, units = "in", dpi = 600)
 ```
 
 ### PCoA 
@@ -78,7 +76,7 @@ floret_PCoA <- cmdscale(guadua_floret_y_dist_matrix, eig = TRUE, x.ret = TRUE, l
 ```
 
 # PCoA grouped by habit (3 categories)
-For this PCoA, individual specimens are colored by the habit typical of their species. Three habitat groups were used: big and erect, leaning/climbing, and small arching. This PCoA is used as Figure 6 in the manuscript.
+For this PCoA, individual specimens are colored by the habit typical of their species. Three habitat groups were used: big and erect, leaning/climbing, and small arching. This PCoA is used as Figure 10 in the manuscript.
 ```{r}
 group.colors <- c("big_erect" = "#7b3294", "leaning_climbing" = "#1b7837",
                   "small_arching" = "#f1a340") #to set colors
@@ -98,7 +96,8 @@ habitatpcoa <- nice_df %>%
   theme_minimal() +
   theme(
     panel.border = element_rect(size = 2, color = "black", fill = NA)
-  ) + 
+  ) +
+  theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     color = "Habit", 
     x = "Axis 1",
@@ -112,43 +111,8 @@ ggsave("florethabits3.pdf", plot = habitatpcoa, width = 6, height = 4, units = "
 ggsave("florethabits3.tiff", plot = habitatpcoa, width = 6, height = 4, units = "in", dpi = 600)
 ```
 
-# PCoA grouped by habit (2 categories)
-For this PCoA, individual specimens are colored by the habit typical of their species. Two habitat groups were used: big and erect or leaning/climbing and small arching. This PCoA was not used in the manuscript; it was simply used to visualize the broader categories used for data analysis.
-```{r}
-group.colors2 <- c("erect_or_climbing" = "#7b3294","small_arching" = "#f1a340")
-
-nice_df <- floret_PCoA$points %>% 
-  data.frame
-nice_df$general_habit <- df_guaduafloret$general_habit
-habits2pcoa <- nice_df %>% 
-  ggplot(aes(X1, X2)) +
-  geom_point(aes(color = general_habit, shape = general_habit), size = 2) +
-  scale_color_manual(name = "Habit", breaks = c("erect_or_climbing", "small_arching"),
-                     labels = c("Erect or climbing", "Small arching"),
-                     values = group.colors2) + 
-  scale_shape_manual(name = "Habit", breaks = c("erect_or_climbing", "small_arching"),
-                     labels = c("Erect or climbing", "Small arching"),
-                     values = c(15, 19)) + 
-  theme_minimal() +
-  theme(
-    panel.border = element_rect(size = 2, color = "black", fill = NA)
-  ) + 
-  labs(
-    color = "Habit", 
-    x = "Axis 1",
-    y = "Axis 2"
-  )
-
-#Remove '#' from below to save images.
-
-ggsave("florethabits2.pdf", plot = habits2pcoa, width = 6, height = 4, units = "in", dpi = 600)
-
-ggsave("florethabits2.tiff", plot = habits2pcoa, width = 6, height = 4, units = "in", dpi = 600)
-
-```
-
 # PCoA grouped by habitat (3 categories)
-For this PCoA, individual specimens are colored by the habitat typical of their species. Three habitat groups were used: Forest, river, and savanna. This PCoA is used as Figure 5 in the manuscript.
+For this PCoA, individual specimens are colored by the habitat typical of their species. Three habitat groups were used: Forest, river, and savanna. This PCoA is used as Figure 9 in the manuscript.
 ```{r}
 group.colors3 <- c("forest" = "#7b3294", "river" = "#1b7837",
                    "savanna" = "#f1a340")
@@ -168,7 +132,8 @@ habitatspcoa <- nice_df %>%
   theme_minimal() +
   theme(
     panel.border = element_rect(size = 2, color = "black", fill = NA)
-  ) + 
+  ) +
+  theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     color = "Habitat", 
     x = "Axis 1",
@@ -183,46 +148,12 @@ ggsave("florethabitat3.tiff", plot = habitatspcoa, width = 6, height = 4, units 
 
 ```
 
-# PCoA grouped by habitat (2 categories)
-For this PCoA, individual specimens are colored by the habitat typical of their species. Two habitat groups were used: Forest or river and savanna. This PCoA was not used in the manuscript; it was simply used to visualize the broader categories later used for data analysis.
-```{r}
-group.colors4 <- c("general_forest" = "#7b3294","savanna" = "#f1a340")
-
-nice_df <- floret_PCoA$points %>% 
-  data.frame
-nice_df$general_habitat <- df_guaduafloret$general_habitat
-habitats2pcoa <- nice_df %>% 
-  ggplot(aes(X1, X2)) +
-  geom_point(aes(color = general_habitat, shape = general_habitat), size = 2) +
-  scale_color_manual(name = "Habitat", breaks = c("general_forest", "savanna"),
-                     labels = c("Forest or River", "Savanna"),
-                     values = group.colors4) + 
-  scale_shape_manual(name = "Habitat", breaks = c("general_forest", "savanna"),
-                     labels = c("Forest or River", "Savanna"),
-                     values = c(15, 19)) + 
-  theme_minimal() +
-  theme(
-    panel.border = element_rect(size = 2, color = "black", fill = NA)
-  ) + 
-  labs(
-    color = "Habitat", 
-    x = "Axis 1",
-    y = "Axis 2"
-  )
-
-#Remove '#' from below to save images.
-
-ggsave("florethabitat2.pdf", plot = habitats2pcoa, width = 6, height = 4, units = "in", dpi = 600)
-
-ggsave("florethabitat2.tiff", plot = habitats2pcoa, width = 6, height = 4, units = "in", dpi = 600)
-```
-
 # PCoA grouped by species
-For this PCoA, individual specimens are colored by species. This PCoA is used as Appendix Figure 6 in the manuscript.
+For this PCoA, individual specimens are colored by species. This PCoA is used as Figure 11 in the manuscript.
 ```{r}
 group.colors <- c("g_aculeata" = "#7b3294", "g_amplexifolia" = "#1b7837",
-                  "g_angustifolia" = "#f1a340", "g_calderoniana" = "#9970ab","g_chacoensis" = "#5aae61",
-                  "g_ciliata" = "#40004b", "g_glomerata" = "#00441b", 
+                  "g_angustifolia" = "#f1a340", "g_calderoniana" = "#00441b","g_chacoensis" = "#5aae61",
+                  "g_ciliata" = "#40004b", "g_glomerata" = "#9970ab", 
                   "g_incana" = "#c7e9b4", "g_latifolia" = "#7fcdbb", 
                   "g_longifolia" = "#bd0026", "g_macclurei" = "#fed976", "g_macrospiculata" = "#bfd3e6", 
                   "g_macrostachya" = "#fd8d3c", "g_paniculata" = "#e7298a", 
@@ -285,7 +216,8 @@ speciespcoa <- nice_df %>%
   theme_minimal() +
   theme(
     panel.border = element_rect(size = 2, color = "black", fill = NA)
-  ) + 
+  ) +
+  theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     color = "Species", 
     x = "Axis 1",
@@ -326,7 +258,8 @@ regionpcoa <- nice_df %>%
   theme_minimal() +
   theme(
     panel.border = element_rect(size = 2, color = "black", fill = NA)
-  ) + 
+  ) +
+  theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     color = "Region", 
     x = "Axis 1",
@@ -341,7 +274,7 @@ ggsave("floretregion.tiff", plot = regionpcoa, width = 6, height = 4, units = "i
 ```
 
 ### Scree Plot From the PCoA 
-From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axes 1 and 2 are responsible for less than half of variation in the PCoA. Elbow is at approximately the eighth principal coordinate axis. Variation becomes negligible at approximately the 30th principal coordinate axis. This image was used as Figure A.4 - Appendix Figure 4 in the manuscript.
+From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axes 1 and 2 are responsible for less than half of variation in the PCoA. Elbow is at approximately the eighth principal coordinate axis. Variation becomes negligible at approximately the 30th principal coordinate axis. This image was used as Figure C.4 - Appendix C Figure 4 in the manuscript.
 ```{r}
 eig_df <- data.frame( x_values = c(1:length(floret_PCoA$eig)) , eig_value = c(floret_PCoA$eig))
 scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +
@@ -360,6 +293,9 @@ ggsave("floretscree.pdf", plot = scree, width = 6, height = 4, units = "in", dpi
 
 ggsave("floretscree.tiff", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
 ```
+
+# Pie Charts
+The following pie charts show percentage of specimens belonging to different habitat groups for which a certain micromorphological feature was present or absent on foliage leaves. These pie charts were used as components of Figure 4 in the manuscript. 
 
 ## Pie charts - specimens from river species
 
