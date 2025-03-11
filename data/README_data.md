@@ -4,17 +4,17 @@
 
 'data' includes two further subdirectories: 
 	
-	A. 'data_raw' contains 'README_data_raw', the README information for the 'data_raw' subdirectory, was well as the raw data files 'guadua_leaf_raw_3.xlsx' and 'guadua_lemmas_paleas_raw_3.xlsx'.
+	A. The subdirectory 'data_raw' contains 'README_data_raw', the README information for the 'data_raw' subdirectory, was well as the raw data files 'guadua_leaf_raw_3.xlsx' and 'guadua_lemmas_paleas_raw_3.xlsx'.
 		
-	-'guadua_leaf_raw_3.xlsx' is the original raw data file for raw *Guadua* leaf micromorphology data. For definitions of all variables, see 'Appendix A data_dictionary_leaf.docx' for the foliage leaf data dictionary. 
+	-The file 'guadua_leaf_raw_3.xlsx' is the original raw data file for raw *Guadua* leaf micromorphology data. For definitions of all variables, see 'Appendix A data_dictionary_leaf.docx' for the foliage leaf data dictionary. 
 		
-	-'guadua_lemmas_paleas_raw_3.xlsx' is the original raw data file for raw *Guadua* floral bract micromorphology data. For definitions of all variables, see 'Appendix B data_dictionary_floret.docx' for the floral bract data dictionary. 
+	-The file 'guadua_lemmas_paleas_raw_3.xlsx' is the original raw data file for raw *Guadua* floral bract micromorphology data. For definitions of all variables, see 'Appendix B data_dictionary_floret.docx' for the floral bract data dictionary. 
 	
-	B. 'data_tidy' contains 'README_data_tidy', the README information for the 'data_tidy' subdirectory, 'guadualeaf.csv', and 'guaduafloret.csv'.
+	B. The subdirectory 'data_tidy' contains 'README_data_tidy', the README information for the 'data_tidy' subdirectory, 'guadualeaf.csv', and 'guaduafloret.csv'.
 	
-	-'guadualeaf.csv' includes tidied *Guadua* foliage leaf data prepared for analysis. It is the product of using 'tidying_guadua_leaf.Rmd' on 'guadua_leaf_raw_3.xlsx' for tidying.
+	-The file 'guadualeaf.csv' includes tidied *Guadua* foliage leaf data prepared for analysis. It is the product of using 'tidying_guadua_leaf.Rmd' on 'guadua_leaf_raw_3.xlsx' for tidying.
 	
-	-'guaduafloret.csv' includes tidied *Guadua* floral bract data prepared for analysis. It is the product of using 'tidying_guadua_floret.Rmd' on 'guadua_lemmas_paleas_raw_3.xlsx' for tidying. 
+	-The file 'guaduafloret.csv' includes tidied *Guadua* floral bract data prepared for analysis. It is the product of using 'tidying_guadua_floret.Rmd' on 'guadua_lemmas_paleas_raw_3.xlsx' for tidying. 
 
 
 ### PACKAGE REFERENCES
