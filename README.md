@@ -3,6 +3,7 @@
 DATA TITLE: *Guadua* micromorphology data, data wrangling, analysis, graphics, and associated documents
 PROJECT TITLE: Foliage leaf and floral bract micromorphology vary by habitat and habit in *Guadua* (Poaceae: Bambusoideae: Bambuseae)  
 DATA ABSTRACT: This repository contains the raw data, tidied data, associated documents, and code for data wrangling, data analysis, and graphics generation for the manuscript "Foliage leaf and floral bract micromorphology vary by habitat and habit in *Guadua* (Poaceae: Bambusoideae: Bambuseae)"
+
 AUTHORS: 
 
 	Author: Elizabeth K. McMurchie
@@ -56,15 +57,15 @@ ASSOCIATED PUBLICATIONS: Foliage leaf and floral bract micromorphology vary by h
 	
 	A. 'data_raw' contains 'README_data_raw', the README information for the 'data_raw' subdirectory, was well as the raw data files 'guadua_leaf_raw_3.xlsx' and 'guadua_lemmas_paleas_raw_3.xlsx'.
 		
-		-'guadua_leaf_raw_3.xlsx' is the original raw data file for raw *Guadua* leaf micromorphology data. For definitions of all variables, see 'Appendix A data_dictionary_leaf.docx' for the foliage leaf data dictionary. 
+	-'guadua_leaf_raw_3.xlsx' is the original raw data file for raw *Guadua* leaf micromorphology data. For definitions of all variables, see 'Appendix A data_dictionary_leaf.docx' for the foliage leaf data dictionary. 
 		
-		-'guadua_lemmas_paleas_raw_3.xlsx' is the original raw data file for raw *Guadua* floral bract micromorphology data. For definitions of all variables, see 'Appendix B data_dictionary_floret.docx' for the floral bract data dictionary. 
+	-'guadua_lemmas_paleas_raw_3.xlsx' is the original raw data file for raw *Guadua* floral bract micromorphology data. For definitions of all variables, see 'Appendix B data_dictionary_floret.docx' for the floral bract data dictionary. 
 	
 	B. 'data_tidy' contains 'README_data_tidy', the README information for the 'data_tidy' subdirectory, 'guadualeaf.csv', and 'guaduafloret.csv'.
 	
-		-'guadualeaf.csv' includes tidied *Guadua* foliage leaf data prepared for analysis. It is the product of using 'tidying_guadua_leaf.Rmd' on 'guadua_leaf_raw_3.xlsx'.
+	-'guadualeaf.csv' includes tidied *Guadua* foliage leaf data prepared for analysis. It is the product of using 'tidying_guadua_leaf.Rmd' on 'guadua_leaf_raw_3.xlsx' for tidying.
 	
-		-'guaduafloret.csv' includes tidied *Guadua* floral bract data prepared for analysis. It is the product of using 'tidying_guadua_floret.Rmd' on 'guadua_lemmas_paleas_raw_3.xlsx'. 
+	-'guaduafloret.csv' includes tidied *Guadua* floral bract data prepared for analysis. It is the product of using 'tidying_guadua_floret.Rmd' on 'guadua_lemmas_paleas_raw_3.xlsx' for tidying. 
 
 
 3. 'data_wrangling'
