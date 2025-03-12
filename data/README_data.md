@@ -59,3 +59,5 @@ Ellis, R.P., 1979. A procedure for standardizing comparative leaf anatomy in the
 
 International Committee for Phytolith Taxonomy (ICPT), Neumann, K., Strömberg, C.A.E., 	Ball, T., Albert, R.M., Vrydaghs, L., Cummings, L.S., 2019. International Code for 	Phytolith Nomenclature (ICPN) 2.0. Ann. Bot. 124, 189–199. https://doi.org/10.1093/aob/mcz064.
 
+Thiers, B., 2025. Index Herbariorum - The William & Lynda Steere Herbarium. New York Botanical Garden’s Virtual Herbarium. http://sweetgum.nybg.org/science/ih/ (accessed 	12 March 2025).
+
