@@ -2,9 +2,9 @@
 
 #### FILE DIRECTORY: TIDY DATA
 	
-	1. The file 'guadualeaf.csv' includes tidied *Guadua* foliage leaf data prepared for analysis. It is the product of using 'tidying_guadua_leaf.Rmd' on 'guadua_leaf_raw_3.xlsx' for tidying.
+1. The file 'guadualeaf.csv' includes tidied *Guadua* foliage leaf data prepared for analysis. It is the product of using 'tidying_guadua_leaf.Rmd' on 'guadua_leaf_raw_3.xlsx' for tidying.
 	
-	2. The file 'guaduafloret.csv' includes tidied *Guadua* floral bract data prepared for analysis. It is the product of using 'tidying_guadua_floret.Rmd' on 'guadua_lemmas_paleas_raw_3.xlsx' for tidying. 
+2. The file 'guaduafloret.csv' includes tidied *Guadua* floral bract data prepared for analysis. It is the product of using 'tidying_guadua_floret.Rmd' on 'guadua_lemmas_paleas_raw_3.xlsx' for tidying. 
 
 
 ### PACKAGE REFERENCES

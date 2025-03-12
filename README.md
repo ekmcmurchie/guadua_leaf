@@ -6,35 +6,35 @@ DATA ABSTRACT: This repository contains the raw data, tidied data, associated do
 
 AUTHORS: 
 
-	Author: Elizabeth K. McMurchie
-	ORCID: 0000-0002-4917-4314
-	Institution: Iowa State University
-	Email: elkamcmurchie@gmail.com; mcmurch@iastate.edu
+Author: Elizabeth K. McMurchie
+ORCID: 0000-0002-4917-4314
+Institution: Iowa State University
+Email: elkamcmurchie@gmail.com; mcmurch@iastate.edu
 
-    	Author: Josephine A. Crock
-	Institution: Iowa State University
-	Email: jaccrock@iastate.edu
+Author: Josephine A. Crock
+Institution: Iowa State University
+Email: jaccrock@iastate.edu
 
-   	 Author: Devin Molnau
-	Institution: Iowa State University
-	Email: demolnau@iastate.edu
+Author: Devin Molnau
+Institution: Iowa State University
+Email: demolnau@iastate.edu
 
-	Author: Haldre S. Rogers
-	ORCID: 0000-0003-4763-5006
-	Institution: Virginia Tech
-	Email: haldre@vt.edu
+Author: Haldre S. Rogers
+ORCID: 0000-0003-4763-5006
+Institution: Virginia Tech
+Email: haldre@vt.edu
 
-	Author: Dean C. Adams
-	ORCID: 0000-0001-9172-7894
-	Institution: Iowa State University
-	Email: dcadams@iastate.edu
+Author: Dean C. Adams
+ORCID: 0000-0001-9172-7894
+Institution: Iowa State University
+Email: dcadams@iastate.edu
 
-	Author: Lynn G. Clark
-	ORCID: 0000-0001-5564-4688
-	Institution: Iowa State University
-	Email: lgclark@iastate.edu
+Author: Lynn G. Clark
+ORCID: 0000-0001-5564-4688
+Institution: Iowa State University
+Email: lgclark@iastate.edu
 
-	Corresponding author: Elizabeth K. McMurchie 
+Corresponding author: Elizabeth K. McMurchie 
 
 ASSOCIATED PUBLICATIONS: Foliage leaf and floral bract micromorphology vary by habitat and habit in *Guadua* (Poaceae: Bambusoideae: Bambuseae)
 
@@ -81,7 +81,7 @@ ASSOCIATED PUBLICATIONS: Foliage leaf and floral bract micromorphology vary by h
 
 	-'README_documents.MD' contains the README information for the 'documents' subdirectory
 
-	-'specimen_data.xlsx' contains basic information about all specimens used in this study. These data include specimen collector and number, species (and subspecies, when applicable) identification, country in which specimens were collected, general habit for the species, general habitat for the species, herbarium at which the specimen is deposited, photographer (Elizabeth K. McMurchie, EKM, or Lynn G. Clark, LGC) who imaged each floral bract and/or foliage leaf specimen, which researcher (Elizabeth K. McMurchie, EKM, or Josephine A. Crock, JAC) categorized presence/absence of micromorphological features on foliage leaves and floral bracts, and metal sputter coating used on foliage leaves and floral bracts (Au, gold, Pt, platinum, or Ir, iridium) prior to imaging. 
+	-'specimen_data.csv' contains basic information about all specimens used in this study. These data include specimen collector and number, species (and subspecies, when applicable) identification, country in which specimens were collected, general habit for the species, general habitat for the species, Index Herbariorum code corresponding to the herbarium at which the specimen is deposited, photographer (Elizabeth K. McMurchie, EKM, or Lynn G. Clark, LGC) who imaged each floral bract and/or foliage leaf specimen, which researcher (Elizabeth K. McMurchie, EKM, or Josephine A. Crock, JAC) classified presence/absence of micromorphological features on foliage leaves and floral bracts, and metal sputter coating used on foliage leaves and floral bracts (Au, gold, Pt, platinum, or Ir, iridium) prior to imaging. Instances of 'x' in the spreadsheet indicate when values were not applicable, such under subspecies when a species has no recognized subspecies and under photographer, coating, and classification for leaves or floral bracts when a specimen lacked either leaves or floral bracts so that these parts could not be imaged or leaves or floral bracts were unusable. Specimen information for specimens from the Missouri Botanical Garden (MO) is searchable at: https://www.tropicos.org/specimen/Search . Specimen information for specimens from the Smithsonian Herbarium (US) is searchable at: https://collections.nmnh.si.edu/search/botany/ . Specimen information for specimens from the Harvard University Herbaria (including A) is searchable at: https://kiki.huh.harvard.edu/databases/specimen_index.html . 
 	
 	-'Appendix A data_dictionary_leaf.docx' contains the data dictionary for foliage leaf micromorphology classification. This includes the definitions for all variables used in 'guadua_leaf_raw_3.xlsx'. Variables are primarily defined with reference to Ellis (1979), with additional reference to Cunha Santana (2017) and ICPT (2019).
 

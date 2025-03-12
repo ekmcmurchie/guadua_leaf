@@ -2,9 +2,9 @@
 
 #### FILE DIRECTORY: RAW DATA
 
-	1. The file 'guadua_leaf_raw_3.xlsx' is the original raw data file for raw *Guadua* leaf micromorphology data. For definitions of all variables, see 'Appendix A data_dictionary_leaf.docx' for the foliage leaf data dictionary. 
+1. The file 'guadua_leaf_raw_3.xlsx' is the original raw data file for raw *Guadua* leaf micromorphology data. For definitions of all variables, see 'Appendix A data_dictionary_leaf.docx' for the foliage leaf data dictionary. 
 		
-	2. The file 'guadua_lemmas_paleas_raw_3.xlsx' is the original raw data file for raw *Guadua* floral bract micromorphology data. For definitions of all variables, see 'Appendix B data_dictionary_floret.docx' for the floral bract data dictionary. 
+2. The file 'guadua_lemmas_paleas_raw_3.xlsx' is the original raw data file for raw *Guadua* floral bract micromorphology data. For definitions of all variables, see 'Appendix B data_dictionary_floret.docx' for the floral bract data dictionary. 
 
 
 ### PACKAGE REFERENCES
