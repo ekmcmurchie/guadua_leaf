@@ -2,9 +2,9 @@
 
 #### FILE DIRECTORY: DATA WRANGLING
 
-	-The file 'tidying_guadua_leaf.Rmd' contains R code used to tidy data from 'guadua_leaf_raw_3.xlsx' for analysis. The 'tidyverse' (including 'readr') (Wickham et al., 2023, 2019) and 'readxl' (Wickham and Bryan, 2023) R packages were used to assist in tidying of data. 
+	1. The file 'tidying_guadua_leaf.Rmd' contains R code used to tidy data from 'guadua_leaf_raw_3.xlsx' for analysis. The 'tidyverse' (including 'readr') (Wickham et al., 2023, 2019) and 'readxl' (Wickham and Bryan, 2023) R packages were used to assist in tidying of data. 
 
-	-The file 'tidying_guadua_floret.Rmd' contains R code used to tidy data from 'guadua_lemmas_paleas_raw_3.xlsx' for analysis. The 'tidyverse' (including 'readr') (Wickham et al., 2023, 2019) and 'readxl' (Wickham and Bryan, 2023) R packages were used to assist in tidying of data. 
+	2. The file 'tidying_guadua_floret.Rmd' contains R code used to tidy data from 'guadua_lemmas_paleas_raw_3.xlsx' for analysis. The 'tidyverse' (including 'readr') (Wickham et al., 2023, 2019) and 'readxl' (Wickham and Bryan, 2023) R packages were used to assist in tidying of data. 
 
 
 ### PACKAGE REFERENCES
