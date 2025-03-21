@@ -17,7 +17,7 @@ Email: jaccrock@iastate.edu
 
 Author: Devin Molnau
 Institution: Iowa State University
-Email: demolnau@iastate.edu
+Email: d.molnau3172@gmail.com
 
 Author: Haldre S. Rogers
 ORCID: 0000-0003-4763-5006
