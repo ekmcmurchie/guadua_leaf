@@ -74,7 +74,7 @@ PCoA <- cmdscale(guadua_y_dist_matrix, eig = TRUE, x.ret = TRUE, list. = TRUE) #
 ```
 
 # PCoA grouped by habit (3 categories)
-For this PCoA, individual specimens are colored by the habit typical of their species. Three habitat groups were used: big and erect, leaning/climbing, and small arching. This PCoA is used as Figure 6 in the manuscript.
+For this PCoA, individual specimens are colored by the habit typical of their species. Three habitat groups were used: big and erect, leaning/climbing, and small arching. This PCoA is used as Figure 7 in the manuscript.
 ```{r}
 group.colors <- c("big_erect" = "#7b3294", "leaning_climbing" = "#1b7837",
                   "small_arching" = "#f1a340") #to set colors
@@ -109,7 +109,7 @@ ggsave("leafhabits3.tiff", plot = habitatpcoa, width = 6, height = 4, units = "i
 ```
 
 # PCoA grouped by species
-For this PCoA, individual specimens are colored by species. This PCoA is used as Figure 8 in the manuscript.
+For this PCoA, individual specimens are colored by species. This PCoA is used as Appendix C Figure 3 (Figure C.3)in the manuscript.
 
 ```{r}
 
@@ -196,7 +196,7 @@ ggsave("leafspecies.tiff", plot = speciespcoa, width = 10, height = 6, units = "
 
 
 # PCoA grouped by habitat (3 categories)
-For this PCoA, individual specimens are colored by the habitat typical of their species. Three habitat groups were used: Forest, river, and savanna. This PCoA is used as Figure 7 in the manuscript.
+For this PCoA, individual specimens are colored by the habitat typical of their species. Three habitat groups were used: Forest, river, and savanna. This PCoA is used as Figure 6 in the manuscript.
 ```{r}
 group.colors3 <- c("forest" = "#7b3294", "river" = "#1b7837",
                    "savanna" = "#f1a340")
@@ -268,7 +268,7 @@ ggsave("leafregion.pdf", plot = regionpcoa, width = 6, height = 4, units = "in",
 ```
 
 ### Scree plot from the PCoA 
-From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axis 1 is responsible for the majority of variation in the PCoA, followed by a steep drop in variation. By the 25th axis, variation is minimal and by the 50th, arguably negligible. Elbow is at approximately the sixth principal coordinate axis.This image was used as Figure C.3 - Appendix C Figure 3 in the manuscript.
+From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axis 1 is responsible for the majority of variation in the PCoA, followed by a steep drop in variation. By the 25th axis, variation is minimal and by the 50th, arguably negligible. Elbow is at approximately the sixth principal coordinate axis.This image was used as Figure C.4 - Appendix C Figure 4 in the manuscript.
 ```{r}
 eig_df <- data.frame( x_values = c(1:length(PCoA$eig)) , eig_value = c(PCoA$eig))
 scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +
