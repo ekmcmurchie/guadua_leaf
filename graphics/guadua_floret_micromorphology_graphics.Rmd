@@ -76,7 +76,7 @@ floret_PCoA <- cmdscale(guadua_floret_y_dist_matrix, eig = TRUE, x.ret = TRUE, l
 ```
 
 # PCoA grouped by habit (3 categories)
-For this PCoA, individual specimens are colored by the habit typical of their species. Three habitat groups were used: big and erect, leaning/climbing, and small arching. This PCoA is used as Figure 10 in the manuscript.
+For this PCoA, individual specimens are colored by the habit typical of their species. Three habitat groups were used: big and erect, leaning/climbing, and small arching. This PCoA is used as Figure 9 in the manuscript.
 ```{r}
 group.colors <- c("big_erect" = "#7b3294", "leaning_climbing" = "#1b7837",
                   "small_arching" = "#f1a340") #to set colors
@@ -112,7 +112,7 @@ ggsave("florethabits3.tiff", plot = habitatpcoa, width = 6, height = 4, units = 
 ```
 
 # PCoA grouped by habitat (3 categories)
-For this PCoA, individual specimens are colored by the habitat typical of their species. Three habitat groups were used: Forest, river, and savanna. This PCoA is used as Figure 9 in the manuscript.
+For this PCoA, individual specimens are colored by the habitat typical of their species. Three habitat groups were used: Forest, river, and savanna. This PCoA is used as Figure 8 in the manuscript.
 ```{r}
 group.colors3 <- c("forest" = "#7b3294", "river" = "#1b7837",
                    "savanna" = "#f1a340")
@@ -284,6 +284,7 @@ scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +
   theme(
     panel.border = element_rect(size = 2, color = "black", fill = NA)
   ) + 
+  theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     x = "Coordinate number",
     y = "Eigenvalue"

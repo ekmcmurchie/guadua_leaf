@@ -109,7 +109,7 @@ ggsave("leafhabits3.tiff", plot = habitatpcoa, width = 6, height = 4, units = "i
 ```
 
 # PCoA grouped by species
-For this PCoA, individual specimens are colored by species. This PCoA is used as Appendix C Figure 3 (Figure C.3)in the manuscript.
+For this PCoA, individual specimens are colored by species. This PCoA is used as Appendix C Figure 3 (Figure C.3) in the manuscript.
 
 ```{r}
 
