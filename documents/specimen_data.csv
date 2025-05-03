@@ -118,6 +118,7 @@ Weatherwax_155,G_paniculata,x,Guatemala,Central_America,Small_Arching,Savanna,IS
 Calderon_and_Soderstrom_2355,G_paraguayana,x,Brazil,Eastern_South_America,Big_Erect,Forest,ISC,Yes,Yes,EKM,EKM,Ir,Ir,EKM,EKM
 Killeen_2626,G_paraguayana,x,Bolivia,Eastern_South_America,Big_Erect,Forest,ISC,Yes,No,EKM,x,Ir,x,EKM,x
 Killeen_2764,G_paraguayana,x,Bolivia,Eastern_South_America,Big_Erect,Forest,ISC,Yes,No,EKM,x,Ir,x,EKM,x
+Londono_and_Guedes_759,G_paraguayana,x,Brazil,Eastern_South_America,Big_Erect,Forest,ISC,Yes,No,LGC,x,Au,x,EKM,x
 Quarin_3318,G_paraguayana,x,Argentina,Eastern_South_America,Big_Erect,Forest,ISC,Yes,No,LGC,x,Au,x,EKM,x
 Calderon_and_Soderstrom_2306,G_refracta,x,Brazil,Eastern_South_America,Small_Arching,Savanna,MO,Yes,No,EKM,x,Ir,x,EKM,x
 Filgueiras_et_al_3378,G_refracta,x,Brazil,Eastern_South_America,Small_Arching,Savanna,ISC,Yes,No,EKM,x,Pt,x,EKM,x
@@ -184,8 +185,7 @@ Seibert_2068,G_weberbaueri,x,Peru,Andes,Leaning_climbing,Forest,US,Yes,Yes,EKM,E
 Smith_et_al_6424,G_weberbaueri,x,Peru,Andes,Leaning_climbing,Forest,ISC,Yes,No,EKM,x,Ir,x,EKM,x
 Stannard_451,G_weberbaueri,x,Venezuela,Eastern_South_America,Leaning_climbing,Forest,ISC,Yes,Yes,EKM,EKM,Ir,Pt,EKM,EKM
 Wasshausen_and_Encarnacion_760,G_weberbaueri,x,Peru,Andes,Leaning_climbing,Forest,US,Yes,No,LGC,x,Au,x,EKM,x
-Londono_and_Guedes_759,Unknown_G_aff_paraguayana,x,Brazil,Eastern_South_America,Big_Erect,Forest,ISC,Yes,No,LGC,x,Au,x,EKM,x
-Calderon_2282,Unknown_G_aff_sarcocarpa,x,Brazil,Eastern_South_America,Leaning_climbing,Forest,ISC,Yes,Yes,EKM,EKM,Pt,Pt,EKM,EKM
-Clark_and_Windisch_872,Unknown_G_aff_trinii,x,Brazil,Eastern_South_America,Small_Arching,Forest,ISC,Yes,No,LGC,x,Pt,x,EKM,x
-Irwin_and_Soderstrom_6714,Unknown_G_aff_virgata,x,Brazil,Eastern_South_America,Small_Arching,Savanna,ISC,Yes,No,EKM,x,Ir,x,EKM,x
-Renvoize_4671,Unknown_G_aff_weberbaueri,x,Bolivia,Eastern_South_America,Leaning_climbing,River,ISC,Yes,Yes,EKM,EKM,Ir,Ir,EKM,JAC
+Calderon_2282,Undescribed_G_aff_glomerata,x,Brazil,Eastern_South_America,Leaning_climbing,Forest,ISC,Yes,Yes,EKM,EKM,Pt,Pt,EKM,EKM
+Clark_and_Windisch_872,Undescribed_G_aff_trinii,x,Brazil,Eastern_South_America,Small_Arching,Forest,ISC,Yes,No,LGC,x,Pt,x,EKM,x
+Irwin_and_Soderstrom_6714,Undescribed_G_aff_virgata,x,Brazil,Eastern_South_America,Small_Arching,River,ISC,Yes,No,EKM,x,Ir,x,EKM,x
+Renvoize_4671,Undescribed_G_aff_weberbaueri,x,Bolivia,Eastern_South_America,Leaning_climbing,River,ISC,Yes,Yes,EKM,EKM,Ir,Ir,EKM,JAC
