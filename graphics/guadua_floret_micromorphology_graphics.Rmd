@@ -100,8 +100,8 @@ habitatpcoa <- nice_df %>%
   theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     color = "Habit", 
-    x = "Axis 1",
-    y = "Axis 2"
+    x = "PCoA1",
+    y = "PCoA2"
   )
 
 #Remove '#' from below to save images.
@@ -136,8 +136,8 @@ habitatspcoa <- nice_df %>%
   theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     color = "Habitat", 
-    x = "Axis 1",
-    y = "Axis 2"
+    x = "PCoA1",
+    y = "PCoA2"
   )
 
 #Remove '#' from below to save images.
@@ -161,7 +161,7 @@ group.colors <- c("g_aculeata" = "#7b3294", "g_amplexifolia" = "#1b7837",
                   "g_superba" = "#41b6c4", "g_tagoara" = "#800026", "g_trinii" = "#dd3497",
                   "g_uncinata" = "#1d91c0", "g_velutina" = "#016c59", 
                   "g_venezuelae" = "#feb24c", "g_weberbaueri" = "#78c679", 
-                  "g_aff_sarcocarpa" = "#993404",
+                  "g_aff_glomerata" = "#993404",
                   "g_aff_weberbaueri" = "#d4b9da") #to set colors
 
 nice_df <- floret_PCoA$points %>% 
@@ -178,7 +178,7 @@ speciespcoa <- nice_df %>%
                                 "g_macrostachya", "g_paniculata", "g_paraguayana",
                                 "g_refracta", "g_sarcocarpa", "g_superba", "g_tagoara", "g_trinii",
                                 "g_uncinata", "g_velutina", "g_venezuelae",
-                                "g_weberbaueri", "g_aff_sarcocarpa",
+                                "g_weberbaueri", "g_aff_glomerata",
                                 "g_aff_weberbaueri"),
                                 labels = c("G. aculeata", "G. amplexifolia", "G. angustifolia",
                                            "G. calderoniana", "G. chacoensis",
@@ -188,7 +188,7 @@ speciespcoa <- nice_df %>%
                                            "G. paraguayana", "G. refracta","G. sarcocarpa", "G. superba",
                                            "G. tagoara", "G. trinii", "G. uncinata",
                                            "G. velutina","G. venezuelae", "G. weberbaueri",
-                                           "G. aff. sarcocarpa",
+                                           "G. aff. glomerata",
                                            "G. aff. weberbaueri"),
                      values = group.colors) + 
     scale_shape_manual(name = "Species", 
@@ -199,7 +199,7 @@ speciespcoa <- nice_df %>%
                                 "g_macrostachya", "g_paniculata", "g_paraguayana",
                                 "g_refracta", "g_sarcocarpa", "g_superba", "g_tagoara", "g_trinii",
                                 "g_uncinata", "g_velutina", "g_venezuelae",
-                                "g_weberbaueri", "g_aff_sarcocarpa",
+                                "g_weberbaueri", "g_aff_glomerata",
                                 "g_aff_weberbaueri"),
                                 labels = c("G. aculeata", "G. amplexifolia", "G. angustifolia",
                                            "G. calderoniana", "G. chacoensis",
@@ -209,10 +209,10 @@ speciespcoa <- nice_df %>%
                                            "G. paraguayana", "G. refracta","G. sarcocarpa", "G. superba",
                                            "G. tagoara", "G. trinii", "G. uncinata",
                                            "G. velutina","G. venezuelae", "G. weberbaueri",
-                                           "G. aff. sarcocarpa",
+                                           "G. aff. glomerata",
                                            "G. aff. weberbaueri"),
                      values = c(15, 17, 19, 18, 3, 4, 7, 15, 3, 25, 23, 24, 21, 22, 18, 7, 9, 8, 
-                                15, 17, 18, 15, 17, 23, 21, 3)) + 
+                                15, 17, 18, 15, 17, 23, 24, 8)) + 
   theme_minimal() +
   theme(
     panel.border = element_rect(size = 2, color = "black", fill = NA)
@@ -220,8 +220,8 @@ speciespcoa <- nice_df %>%
   theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     color = "Species", 
-    x = "Axis 1",
-    y = "Axis 2"
+    x = "PCoA1",
+    y = "PCoA2"
   )
 
 plot(speciespcoa)
@@ -262,8 +262,8 @@ regionpcoa <- nice_df %>%
   theme(plot.background = element_rect(fill = 'white', color = 'white')) +
   labs(
     color = "Region", 
-    x = "Axis 1",
-    y = "Axis 2"
+    x = "PCoA1",
+    y = "PCoA2"
   )
 
 #Remove '#' from below to save images.
@@ -290,9 +290,9 @@ scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +
     y = "Eigenvalue"
   )
 
-ggsave("floretscree.pdf", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("floretscree.pdf", plot = scree, width = 6, height = 4, units = "in", dpi = 1000)
 
-ggsave("floretscree.tiff", plot = scree, width = 6, height = 4, units = "in", dpi = 600)
+ggsave("floretscree.tiff", plot = scree, width = 6, height = 4, units = "in", dpi = 1500)
 ```
 
 # Pie Charts
