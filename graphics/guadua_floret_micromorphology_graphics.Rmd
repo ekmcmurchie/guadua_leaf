@@ -76,7 +76,7 @@ floret_PCoA <- cmdscale(guadua_floret_y_dist_matrix, eig = TRUE, x.ret = TRUE, l
 ```
 
 # PCoA grouped by habit (3 categories)
-For this PCoA, individual specimens are colored by the habit typical of their species. Three habitat groups were used: big and erect, leaning/climbing, and small arching. This PCoA is used as Figure 9 in the manuscript.
+For this PCoA, individual specimens are colored by the habit typical of their species. Three habitat groups were used: big and erect, leaning/climbing, and small arching. This PCoA is used as Figure 10 in the manuscript.
 ```{r}
 group.colors <- c("big_erect" = "#7b3294", "leaning_climbing" = "#1b7837",
                   "small_arching" = "#f1a340") #to set colors
@@ -112,7 +112,7 @@ ggsave("florethabits3.tiff", plot = habitatpcoa, width = 6, height = 4, units = 
 ```
 
 # PCoA grouped by habitat (3 categories)
-For this PCoA, individual specimens are colored by the habitat typical of their species. Three habitat groups were used: Forest, river, and savanna. This PCoA is used as Figure 8 in the manuscript.
+For this PCoA, individual specimens are colored by the habitat typical of their species. Three habitat groups were used: Forest, river, and savanna. This PCoA is used as Figure 9 in the manuscript.
 ```{r}
 group.colors3 <- c("forest" = "#7b3294", "river" = "#1b7837",
                    "savanna" = "#f1a340")
@@ -149,7 +149,7 @@ ggsave("florethabitat3.tiff", plot = habitatspcoa, width = 6, height = 4, units 
 ```
 
 # PCoA grouped by species
-For this PCoA, individual specimens are colored by species. This PCoA is used as Appendix C Figure 5 (Figure C.5) in the manuscript.
+For this PCoA, individual specimens are colored by species. This PCoA is used as Figure 11 in the manuscript.
 ```{r}
 group.colors <- c("g_aculeata" = "#7b3294", "g_amplexifolia" = "#1b7837",
                   "g_angustifolia" = "#f1a340", "g_calderoniana" = "#00441b","g_chacoensis" = "#5aae61",
@@ -274,7 +274,7 @@ ggsave("floretregion.tiff", plot = regionpcoa, width = 6, height = 4, units = "i
 ```
 
 ### Scree Plot From the PCoA 
-From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axes 1 and 2 are responsible for less than half of variation in the PCoA. Elbow is at approximately the eighth principal coordinate axis. Variation becomes negligible at approximately the 30th principal coordinate axis. This image was used as Figure C.6 - Appendix C Figure 6 in the manuscript.
+From this we can obtain eigenvalues and then plot them to show the percent variation explained along each PCoA axis. As seen in the plot below, PCoA axes 1 and 2 are responsible for less than half of variation in the PCoA. Elbow is at approximately the eighth principal coordinate axis. Variation becomes negligible at approximately the 30th principal coordinate axis. This image was used as Figure C.4 - Appendix C Figure 4 in the manuscript.
 ```{r}
 eig_df <- data.frame( x_values = c(1:length(floret_PCoA$eig)) , eig_value = c(floret_PCoA$eig))
 scree <- ggplot(data = eig_df, aes(x = x_values, y = eig_value)) +
@@ -296,7 +296,7 @@ ggsave("floretscree.tiff", plot = scree, width = 6, height = 4, units = "in", dp
 ```
 
 # Pie Charts
-The following pie charts show percentage of specimens belonging to different habitat groups for which a certain micromorphological feature was present or absent on foliage leaves. These pie charts were used as components of Figure 4 in the manuscript. 
+The following pie charts show percentage of specimens belonging to different habitat groups for which a certain micromorphological feature was present or absent on foliage leaves. These pie charts were used as components of Figure 5 in the manuscript. 
 
 ## Pie charts - specimens from river species
 
