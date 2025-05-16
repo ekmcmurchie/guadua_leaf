@@ -1,6 +1,7 @@
 ## GENERAL INFORMATION 
 
 DATA TITLE: *Guadua* micromorphology data, data wrangling, analysis, graphics, and associated documents
+
 PROJECT TITLE: Foliage leaf and floral bract micromorphology vary by habitat and habit in *Guadua* (Poaceae: Bambusoideae: Bambuseae)  
 DATA ABSTRACT: This repository contains the raw data, tidied data, associated documents, and code for data wrangling, data analysis, and graphics generation for the manuscript "Foliage leaf and floral bract micromorphology vary by habitat and habit in *Guadua* (Poaceae: Bambusoideae: Bambuseae)"
 
